@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "radio",
+            "invocationName": "radio rmf fm",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
