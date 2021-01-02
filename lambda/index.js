@@ -41,23 +41,6 @@ const LaunchRequestHandler = {
     }
 };
 
-const differentTest = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
-    },
-    async handle(handlerInput) {
-
-        await getLatestRmfFmLink();
-        console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
-
-        let response = audio
-            .speak(`${HERE_IS} - ${station.name}, from ${station.channel}.`)
-            .play(station)
-
-        return response;
-    }
-};
-
 async function getLatestRmfFmLink() {
     await fetch(STATION_URL)
         .then(res => res.text())
