@@ -1,8 +1,8 @@
 {
-  "name": "Radio-RMF-FM",
+  "name": "Radio-Zet",
   "type": "module",
   "version": "1.2.0",
-  "description": "Alexa skill which plays Polish Radio RMF FM",
+  "description": "Alexa skill which plays Polish Radio Zet",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
