@@ -8,8 +8,8 @@ const fetch = require('node-fetch');
 const Alexa = require('ask-sdk-core');
 var xmlToJson = require('xml-js');
 
-const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
-const STATION_NAME = "RMF FM"
+const STATION_URL = "https://n-12-2.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx"
+const STATION_NAME = "Radio Zet"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is"
 
@@ -55,11 +55,10 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const speakOutput = 'To listen to radio zet simply say, open radio zet';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
             .getResponse();
     }
 };
@@ -154,9 +153,6 @@ const AudioPlayerIntent = {
 
         console.log(`AudioPlayerIntent called: ${JSON.stringify(handlerInput)}`);
         console.log(`AudioPlayerIntent was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`);
-        if (handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackNearlyFinished') {
-            console.log(`~~~~~~~~~~~~ YOU PASSED THE FUCKING TEST ~~~~~~~~~~~~~~~~`)
-        }
         return handlerInput.responseBuilder.getResponse();
     }
 };
