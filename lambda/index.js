@@ -4,7 +4,7 @@
  * session persistence, api calls, and more.
  * */
 
-//  This is an extra comment
+//  This is an extra comment that will be soon removed
 const audio = require('AudioController.js');
 const fetch = require('node-fetch');
 const Alexa = require('ask-sdk-core');
