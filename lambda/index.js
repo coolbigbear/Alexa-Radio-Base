@@ -3,6 +3,8 @@
  * Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
  * session persistence, api calls, and more.
  * */
+
+//  This is an extra comment
 const audio = require('AudioController.js');
 const fetch = require('node-fetch');
 const Alexa = require('ask-sdk-core');
