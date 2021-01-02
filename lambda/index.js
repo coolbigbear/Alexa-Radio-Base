@@ -41,7 +41,7 @@ const LaunchRequestHandler = {
     }
 };
 
-const test = {
+const differentTest = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
