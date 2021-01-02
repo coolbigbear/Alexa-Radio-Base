@@ -8,7 +8,7 @@ const fetch = require('node-fetch');
 const Alexa = require('ask-sdk-core');
 var xmlToJson = require('xml-js');
 
-const STATION_URL = "https://n-12-2.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx"
+const STATION_URL = "https://r.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx"
 const STATION_NAME = "Radio Zet"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is"
