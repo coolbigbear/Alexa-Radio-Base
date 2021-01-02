@@ -2,6 +2,94 @@
   "manifest": {
     "publishingInformation": {
       "locales": {
+        "en-US": {
+          "summary": "Plays Polish Radio Zet",
+          "examplePhrases": [
+            "Alexa, open Radio Zet",
+            "Alexa, use Radio Zet",
+            "Alexa, start Radio Zet"
+          ],
+          "keywords": [
+            "radio",
+            "Zet",
+            "FM",
+            "Polskie",
+            "radio",
+            "Polish",
+            "music"
+          ],
+          "name": "Radio Zet",
+          "description": "Plays Radio Zet from Poland on your Alexa device!\nSimply say \"Alexa open Radio Zet\" and listen to your favourite Polish Radio station.\nThe radio station is in Polish and features varying genres of music.\nSay \"Alexa stop\" to stop playing.",
+          "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
+          "updatesDescription": "First release of Radio Zet for Alexa!",
+          "largeIconUri": "file://assets/images/en-US_largeIconUri.png"
+        },
+        "en-CA": {
+          "summary": "Plays Polish Radio Zet",
+          "examplePhrases": [
+            "Alexa, open Radio Zet",
+            "Alexa, use Radio Zet",
+            "Alexa, start Radio Zet"
+          ],
+          "keywords": [
+            "radio",
+            "Zet",
+            "FM",
+            "Polskie",
+            "radio",
+            "Polish",
+            "music"
+          ],
+          "name": "Radio Zet",
+          "description": "Plays Radio Zet from Poland on your Alexa device!\nSimply say \"Alexa open Radio Zet\" and listen to your favourite Polish Radio station.\nThe radio station is in Polish and features varying genres of music.\nSay \"Alexa stop\" to stop playing.",
+          "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
+          "updatesDescription": "First release of Radio Zet for Alexa!",
+          "largeIconUri": "file://assets/images/en-US_largeIconUri.png"
+        },
+        "en-IN": {
+          "summary": "Plays Polish Radio Zet",
+          "examplePhrases": [
+            "Alexa, open Radio Zet",
+            "Alexa, use Radio Zet",
+            "Alexa, start Radio Zet"
+          ],
+          "keywords": [
+            "radio",
+            "Zet",
+            "FM",
+            "Polskie",
+            "radio",
+            "Polish",
+            "music"
+          ],
+          "name": "Radio Zet",
+          "description": "Plays Radio Zet from Poland on your Alexa device!\nSimply say \"Alexa open Radio Zet\" and listen to your favourite Polish Radio station.\nThe radio station is in Polish and features varying genres of music.\nSay \"Alexa stop\" to stop playing.",
+          "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
+          "updatesDescription": "First release of Radio Zet for Alexa!",
+          "largeIconUri": "file://assets/images/en-US_largeIconUri.png"
+        },
+        "en-AU": {
+          "summary": "Plays Polish Radio Zet",
+          "examplePhrases": [
+            "Alexa, open Radio Zet",
+            "Alexa, use Radio Zet",
+            "Alexa, start Radio Zet"
+          ],
+          "keywords": [
+            "radio",
+            "Zet",
+            "FM",
+            "Polskie",
+            "radio",
+            "Polish",
+            "music"
+          ],
+          "name": "Radio Zet",
+          "description": "Plays Radio Zet from Poland on your Alexa device!\nSimply say \"Alexa open Radio Zet\" and listen to your favourite Polish Radio station.\nThe radio station is in Polish and features varying genres of music.\nSay \"Alexa stop\" to stop playing.",
+          "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
+          "updatesDescription": "First release of Radio Zet for Alexa!",
+          "largeIconUri": "file://assets/images/en-US_largeIconUri.png"
+        },
         "en-GB": {
           "summary": "Plays Polish Radio Zet",
           "examplePhrases": [
