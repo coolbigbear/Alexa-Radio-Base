@@ -43,6 +43,16 @@ async function getLatestRadioLink() {
     station.url = STATION_URL
 }
 
+function stopMusic() {
+    const speakOutput = 'Stopping!';
+
+    let response = audio
+        .speak(speakOutput)
+        .stop()
+
+    return response;
+}
+
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -100,16 +110,6 @@ const PauseIntentHandler = {
         return stopMusic()
     }
 };
-
-function stopMusic() {
-    const speakOutput = 'Stopping!';
-
-    let response = audio
-        .speak(speakOutput)
-        .stop()
-    
-    return response;
-}
 
 const UnsupportedIntentHandler = {
     canHandle(handlerInput) {
