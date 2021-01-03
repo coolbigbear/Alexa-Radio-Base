@@ -69,5 +69,9 @@ class AlexaResponses {
         return this;
     }
 
+    playMusic(station, message) {
+        return this.speak(message).play(station)
+    }
+
 }
 module.exports = new AlexaResponses();

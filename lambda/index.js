@@ -36,7 +36,7 @@ const LaunchRequestHandler = {
         await getLatestRmfFmLink();
         console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        return playMusic(NEW_STREAM_MESSAGE)
+        return audio.playMusic(station, NEW_STREAM_MESSAGE)
     }
 };
 
