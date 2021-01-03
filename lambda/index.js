@@ -15,6 +15,9 @@ const STATION_NAME = "RMF FM"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is"
 
+const NEW_STREAM_MESSAGE = `${HERE_IS} - ${station.name}, from ${station.channel}.`
+const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
+
 let station = {
     name: STATION_NAME,
     channel: STATION_CHANNEL,
@@ -22,7 +25,6 @@ let station = {
     progress: 0,
     token: `${STATION_NAME}:${STATION_CHANNEL}`
 }
-
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -33,23 +35,58 @@ const LaunchRequestHandler = {
         await getLatestRmfFmLink();
         console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        let response = audio
-            .speak(`${HERE_IS} - ${station.name}, from ${station.channel}.`)
-            .play(station)
+        return playMusic(NEW_STREAM_MESSAGE)
+    }
+};
 
-        return response;
+const PlayRadioIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayRadioIntent';
+    },
+    async handle(handlerInput) {
+
+        await getLatestRmfFmLink();
+        console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
+
+        return playMusic(NEW_STREAM_MESSAGE)
+
     }
 };
 
 async function getLatestRmfFmLink() {
     await fetch(STATION_URL)
-        .then(res => res.text())
-        .then(body => {
-            var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }));
-            var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text;
-            station.url = rmfLink;
-            station.progress = 0;
-        });
+    .then(res => res.text())
+    .then(body => {
+        var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }));
+        var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text;
+        station.url = rmfLink;
+        station.progress = 0;
+    });
+}
+
+function stopMusic() {
+    const speakOutput = 'Stopping!';
+
+    let response = audio
+        .speak(speakOutput)
+        .stop()
+    
+    return response;
+}
+
+function playMusic(message) {
+    let response = null;
+    if (message != "") {
+        response = audio
+            .speak(message)
+            .play(station)
+    } else {
+        response = audio
+            .play(station)
+    }
+
+    return response;
 }
 
 const HelpIntentHandler = {
@@ -58,11 +95,10 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const speakOutput = 'To listen to radio RMF FM simply say, open radio RMF FM';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
             .getResponse();
     }
 };
@@ -74,16 +110,11 @@ const ResumeIntentHandler = {
             && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.ResumeIntent');
     },
     async handle(handlerInput) {
-        const speakOutput = `Resuming ${STATION_NAME}`;
-        console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
+        console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
         await getLatestRmfFmLink()
 
-        let response = audio
-            .speak(speakOutput)
-            .play(station)
-
-        return response;
+        return playMusic(RESUMING_MESSAGE)
     }
 };
 
@@ -111,15 +142,6 @@ const PauseIntentHandler = {
     }
 };
 
-function stopMusic() {
-    const speakOutput = 'Stopping!';
-
-    let response = audio
-        .speak(speakOutput)
-        .stop()
-    
-    return response;
-}
 
 const UnsupportedIntentHandler = {
     canHandle(handlerInput) {
@@ -157,9 +179,7 @@ const AudioPlayerIntent = {
 
         console.log(`AudioPlayerIntent called: ${JSON.stringify(handlerInput)}`);
         console.log(`AudioPlayerIntent was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`);
-        if (handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackNearlyFinished') {
-            console.log(`~~~~~~~~~~~~ YOU PASSED THE FUCKING TEST ~~~~~~~~~~~~~~~~`)
-        }
+
         return handlerInput.responseBuilder.getResponse();
     }
 };
@@ -178,8 +198,9 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 
         await getLatestRmfFmLink()
 
-        let response = audio
-            .play(station)
+        let response = playMusic("")
+        
+        console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
         
         return response
     }
@@ -272,6 +293,7 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
+        PlayRadioIntentHandler,
         AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent,
         AudioPlayerIntent,
         HelpIntentHandler,
