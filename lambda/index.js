@@ -15,9 +15,6 @@ const STATION_NAME = "RMF FM"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is"
 
-const NEW_STREAM_MESSAGE = `${HERE_IS} - ${station.name}, from ${station.channel}.`
-const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
-
 let station = {
     name: STATION_NAME,
     channel: STATION_CHANNEL,
@@ -25,6 +22,10 @@ let station = {
     progress: 0,
     token: `${STATION_NAME}:${STATION_CHANNEL}`
 }
+
+const NEW_STREAM_MESSAGE = `${HERE_IS} - ${station.name}, from ${station.channel}.`
+const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
+
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
