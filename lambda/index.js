@@ -34,7 +34,7 @@ const LaunchRequestHandler = {
     },
     async handle(handlerInput) {
 
-        await getLatestRmfFmLink();
+        await getLatestRadioLink();
         console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
         return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
@@ -48,7 +48,7 @@ const PlayRadioIntentHandler = {
     },
     async handle(handlerInput) {
 
-        await getLatestRmfFmLink();
+        await getLatestRadioLink();
         console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
         return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
@@ -56,7 +56,7 @@ const PlayRadioIntentHandler = {
     }
 };
 
-async function getLatestRmfFmLink() {
+async function getLatestRadioLink() {
     await fetch(STATION_URL)
     .then(res => res.text())
     .then(body => {
@@ -90,7 +90,7 @@ const ResumeIntentHandler = {
     async handle(handlerInput) {
 
         console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
-        await getLatestRmfFmLink()
+        await getLatestRadioLink()
 
         return audio.playMusicWithMessage(station, RESUMING_MESSAGE)
     }
@@ -174,7 +174,7 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
         console.log(`AudioPlayerPlaybackOrNearlyFinished called: ${JSON.stringify(handlerInput)}`);
         console.log(`Playback failed or nearly finished was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
 
-        await getLatestRmfFmLink()
+        await getLatestRadioLink()
 
         let response = audio.playMusicWithoutMessage(station)
         
