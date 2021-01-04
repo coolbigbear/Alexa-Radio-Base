@@ -15,4 +15,4 @@ async function getLatestRadioLink(station_url, station) {
     return station
 }
 
-module.exports = getLatestRadioLink()
+module.exports = { getLatestRadioLink }
