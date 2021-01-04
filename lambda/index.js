@@ -5,9 +5,9 @@
  * */
 
 //  This is an extra comment that will be soon removed
-const audio = require('AudioController.js');
-const radio = require('RadioController.js')
-const Alexa = require('ask-sdk-core');
+const audio = require("AudioController.js")
+const radio = require("RadioController.js")
+const Alexa = require("ask-sdk-core")
 
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
 const STATION_NAME = "RMF FM"
@@ -15,166 +15,166 @@ const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is"
 
 let station = {
-    name: STATION_NAME,
-    channel: STATION_CHANNEL,
-    url: "",
-    progress: 0,
-    token: `${STATION_NAME}:${STATION_CHANNEL}`
+	name: STATION_NAME,
+	channel: STATION_CHANNEL,
+	url: "",
+	progress: 0,
+	token: `${STATION_NAME}:${STATION_CHANNEL}`
 }
 
 const NEW_STREAM_MESSAGE = `${HERE_IS} - ${station.name}, from ${station.channel}.`
 const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
-const STOP_MESSAGE = `Stopping!`
+const STOP_MESSAGE = "Stopping!"
 
 
 const LaunchRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
-    },
-    async handle(handlerInput) {
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "LaunchRequest"
+	},
+	async handle(handlerInput) {
 
-        station = await radio.getLatestRadioLink(STATION_URL, station);
-        console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
+		station = await radio.getLatestRadioLink(STATION_URL, station)
+		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
-    }
-};
+		return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
+	}
+}
 
 const PlayRadioIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayRadioIntent';
-    },
-    async handle(handlerInput) {
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === "PlayRadioIntent"
+	},
+	async handle(handlerInput) {
 
-		station = await radio.getLatestRadioLink(STATION_URL, station);
-        console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
+		station = await radio.getLatestRadioLink(STATION_URL, station)
+		console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
+		return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
 
-    }
-};
+	}
+}
 
 const HelpIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
-    },
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.HelpIntent"
+	},
 	handle(handlerInput) {
 		
-        const speakOutput = `To listen to radio ${STATION_NAME} simply say, open radio ${STATION_NAME}`;
+		const speakOutput = `To listen to radio ${STATION_NAME} simply say, open radio ${STATION_NAME}`
 
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
-};
+		return handlerInput.responseBuilder
+			.speak(speakOutput)
+			.getResponse()
+	}
+}
 
 const ResumeIntentHandler = {
 
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.ResumeIntent');
-    },
-    async handle(handlerInput) {
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.ResumeIntent")
+	},
+	async handle(handlerInput) {
 
-		station = await radio.getLatestRadioLink(STATION_URL, station);
-        console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
+		station = await radio.getLatestRadioLink(STATION_URL, station)
+		console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        return audio.playMusicWithMessage(station, RESUMING_MESSAGE)
-    }
-};
+		return audio.playMusicWithMessage(station, RESUMING_MESSAGE)
+	}
+}
 
 const CancelAndStopIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
-                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
-    },
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.CancelIntent"
+                || Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.StopIntent")
+	},
 	handle(handlerInput) {
 		
-        console.log(`Cancel stop intent handler triggered: ${JSON.stringify(handlerInput)}`)
-        return audio.stopPlayingWithMessage(STOP_MESSAGE);
-    }
-};
+		console.log(`Cancel stop intent handler triggered: ${JSON.stringify(handlerInput)}`)
+		return audio.stopPlayingWithMessage(STOP_MESSAGE)
+	}
+}
 
 
 const PauseIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.PauseIntent');
-    },
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.PauseIntent")
+	},
 	handle(handlerInput) {
 		
-        console.log(`Pause intent handler triggered: ${JSON.stringify(handlerInput)}`)
-        return audio.stopPlayingWithMessage(STOP_MESSAGE)
-    }
-};
+		console.log(`Pause intent handler triggered: ${JSON.stringify(handlerInput)}`)
+		return audio.stopPlayingWithMessage(STOP_MESSAGE)
+	}
+}
 
 
 const UnsupportedIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.LoopOffIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.LoopOnIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.PreviousIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NextIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.RepeatIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.ShuffleOffIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.ShuffleOnIntent' ||
-                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StartOverIntent'
-            );
-    },
-    handle(handlerInput) {
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.LoopOffIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.LoopOnIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.PreviousIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.NextIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.RepeatIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.ShuffleOffIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.ShuffleOnIntent" ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.StartOverIntent"
+            )
+	},
+	handle(handlerInput) {
 
-        const speakOutput = "Sorry, this is not supported for radio playback"
-		console.log(`Unsupported intent rejected: ${JSON.stringify(handlerInput)}`);
+		const speakOutput = "Sorry, this is not supported for radio playback"
+		console.log(`Unsupported intent rejected: ${JSON.stringify(handlerInput)}`)
 		
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
-};
+		return handlerInput.responseBuilder
+			.speak(speakOutput)
+			.getResponse()
+	}
+}
 
 const AudioPlayerIntent = {
-    canHandle(handlerInput) {
-        return (handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackStarted' ||
-            handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackFinished' ||
-            handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackStopped' ||
-            handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackNearlyFinished' ||
-            handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackFailed'
-        );
-    },
-    handle(handlerInput) {
+	canHandle(handlerInput) {
+		return (handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStarted" ||
+            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFinished" ||
+            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStopped" ||
+            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished" ||
+            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFailed"
+		)
+	},
+	handle(handlerInput) {
 
-        console.log(`AudioPlayerIntent called: ${JSON.stringify(handlerInput)}`);
-        console.log(`AudioPlayerIntent was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`);
+		console.log(`AudioPlayerIntent called: ${JSON.stringify(handlerInput)}`)
+		console.log(`AudioPlayerIntent was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
 
-        return handlerInput.responseBuilder.getResponse();
-    }
-};
+		return handlerInput.responseBuilder.getResponse()
+	}
+}
 
 const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
-    canHandle(handlerInput) {
-        return (
-            handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackFailed' ||
-            handlerInput.requestEnvelope.request.type === 'AudioPlayer.PlaybackNearlyFinished'
-        );
-    },
-    async handle(handlerInput) {
+	canHandle(handlerInput) {
+		return (
+			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFailed" ||
+            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished"
+		)
+	},
+	async handle(handlerInput) {
 
-        console.log(`AudioPlayerPlaybackOrNearlyFinished called: ${JSON.stringify(handlerInput)}`);
-        console.log(`Playback failed or nearly finished was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
+		console.log(`AudioPlayerPlaybackOrNearlyFinished called: ${JSON.stringify(handlerInput)}`)
+		console.log(`Playback failed or nearly finished was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
 
-		station = await radio.getLatestRadioLink(STATION_URL, station);
+		station = await radio.getLatestRadioLink(STATION_URL, station)
 
-        let response = audio.playMusicWithoutMessage(station)
+		let response = audio.playMusicWithoutMessage(station)
         
-        console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
+		console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
         
-        return response
-    }
-};
+		return response
+	}
+}
 
 /* *
 * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
@@ -182,20 +182,20 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 * This handler can be safely added but will be ingnored in locales that do not support it yet 
 * */
 const FallbackIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
-    },
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.FallbackIntent"
+	},
 	handle(handlerInput) {
 		
-        const speakOutput = 'Sorry, I don\'t know about that. Please try again.';
+		const speakOutput = "Sorry, I don't know about that. Please try again."
 
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
-    }
-};
+		return handlerInput.responseBuilder
+			.speak(speakOutput)
+			.reprompt(speakOutput)
+			.getResponse()
+	}
+}
 
 /* *
  * SessionEndedRequest notifies that a session was ended. This handler will be triggered when a currently open 
@@ -203,15 +203,15 @@ const FallbackIntentHandler = {
  * respond or says something that does not match an intent defined in your voice model. 3) An error occurs 
  * */
 const SessionEndedRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
-    },
-    handle(handlerInput) {
-        console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`);
-        // Any cleanup logic goes here.
-        return handlerInput.responseBuilder.getResponse(); // notice we send an empty response
-    }
-};
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "SessionEndedRequest"
+	},
+	handle(handlerInput) {
+		console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`)
+		// Any cleanup logic goes here.
+		return handlerInput.responseBuilder.getResponse() // notice we send an empty response
+	}
+}
 
 /* *
  * The intent reflector is used for interaction model testing and debugging.
@@ -240,21 +240,21 @@ const SessionEndedRequestHandler = {
  * the intent being invoked or included it in the skill builder below 
  * */
 const ErrorHandler = {
-    canHandle() {
-        return true;
-    },
-    handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
-        console.log(`~~~~ Error handled: ${error}`);
-        console.log(`~~~~ Error handled JSON: ${JSON.stringify(error)}`);
-        console.log(`~~~~ Handler Input: ${JSON.stringify(handlerInput)}`);
+	canHandle() {
+		return true
+	},
+	handle(handlerInput, error) {
+		const speakOutput = "Sorry, I had trouble doing what you asked. Please try again."
+		console.log(`~~~~ Error handled: ${error}`)
+		console.log(`~~~~ Error handled JSON: ${JSON.stringify(error)}`)
+		console.log(`~~~~ Handler Input: ${JSON.stringify(handlerInput)}`)
 
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .withShouldEndSession(true)
-            .getResponse();
-    }
-};
+		return handlerInput.responseBuilder
+			.speak(speakOutput)
+			.withShouldEndSession(true)
+			.getResponse()
+	}
+}
 
 /**
  * This handler acts as the entry point for your skill, routing all request and response
@@ -262,18 +262,18 @@ const ErrorHandler = {
  * defined are included below. The order matters - they're processed top to bottom 
  * */
 exports.handler = Alexa.SkillBuilders.custom()
-    .addRequestHandlers(
-        LaunchRequestHandler,
-        PlayRadioIntentHandler,
-        AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent,
-        AudioPlayerIntent,
-        HelpIntentHandler,
-        ResumeIntentHandler,
-        PauseIntentHandler,
-        CancelAndStopIntentHandler,
-        UnsupportedIntentHandler,
-        FallbackIntentHandler,
-        SessionEndedRequestHandler)
-    .addErrorHandlers(
-        ErrorHandler)
-    .lambda();
+	.addRequestHandlers(
+		LaunchRequestHandler,
+		PlayRadioIntentHandler,
+		AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent,
+		AudioPlayerIntent,
+		HelpIntentHandler,
+		ResumeIntentHandler,
+		PauseIntentHandler,
+		CancelAndStopIntentHandler,
+		UnsupportedIntentHandler,
+		FallbackIntentHandler,
+		SessionEndedRequestHandler)
+	.addErrorHandlers(
+		ErrorHandler)
+	.lambda()

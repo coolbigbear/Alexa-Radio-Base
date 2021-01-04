@@ -16,5 +16,9 @@
     "xmlhttprequest": "^1.8.0",
     "node-fetch": "^2.6.0",
     "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-plugin-import": "^2.22.1"
   }
 }
