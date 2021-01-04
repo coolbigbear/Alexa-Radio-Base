@@ -74,7 +74,7 @@ class AlexaResponses {
     }
 
     playMusicWithoutMessage(station) {
-        return this.play(station)
+        return play(station)
     }
 
     stopPlayingWithMessage(message) {
