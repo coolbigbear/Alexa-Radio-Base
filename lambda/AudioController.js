@@ -80,5 +80,9 @@ class AlexaResponses {
 	stopPlayingWithMessage(message) {
 		return this.speak(message).stop()
 	}
+
+	stopPlayingWithoutMessage() {
+		return this.speak("").stop()
+	}
 }
 module.exports = new AlexaResponses()
