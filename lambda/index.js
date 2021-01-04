@@ -62,7 +62,7 @@ const HelpIntentHandler = {
 	},
 	handle(handlerInput) {
 		
-		const speakOutput = `To listen to radio ${STATION_NAME} simply say, open radio ${STATION_NAME}`
+		const speakOutput = `To listen to, radio ${STATION_NAME} simply say, open radio ${STATION_NAME}`
 
 		return handlerInput.responseBuilder
 			.speak(speakOutput)
