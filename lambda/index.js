@@ -6,6 +6,7 @@
 
 //  This is an extra comment that will be soon removed
 const audio = require('AudioController.js');
+const radio = require('RadioController.js')
 const fetch = require('node-fetch');
 const Alexa = require('ask-sdk-core');
 var xmlToJson = require('xml-js');
@@ -34,7 +35,7 @@ const LaunchRequestHandler = {
     },
     async handle(handlerInput) {
 
-        await getLatestRadioLink();
+        station = await radio.getLatestRadioLink(STATION_URL, station);
         console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
         return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
