@@ -5,10 +5,12 @@ class AlexaResponses {
     }
 
     speak(speech) {
-        this.outputSpeech = {
-            "type": "SSML",
-            "ssml": `<speak>${speech}</speak>`
-        };
+        if (speech !== "") {
+            this.outputSpeech = {
+                "type": "SSML",
+                "ssml": `<speak>${speech}</speak>`
+            };
+        }
 
         return this;
     }
@@ -74,7 +76,7 @@ class AlexaResponses {
     }
 
     playMusicWithoutMessage(station) {
-        return play(station)
+        return this.speak("").play(station)
     }
 
     stopPlayingWithMessage(message) {
