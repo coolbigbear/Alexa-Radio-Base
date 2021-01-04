@@ -7,9 +7,7 @@
 //  This is an extra comment that will be soon removed
 const audio = require('AudioController.js');
 const radio = require('RadioController.js')
-const fetch = require('node-fetch');
 const Alexa = require('ask-sdk-core');
-var xmlToJson = require('xml-js');
 
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
 const STATION_NAME = "RMF FM"
@@ -49,7 +47,7 @@ const PlayRadioIntentHandler = {
     },
     async handle(handlerInput) {
 
-        await getLatestRadioLink();
+		station = await radio.getLatestRadioLink(STATION_URL, station);
         console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
         return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
@@ -57,24 +55,14 @@ const PlayRadioIntentHandler = {
     }
 };
 
-async function getLatestRadioLink() {
-    await fetch(STATION_URL)
-    .then(res => res.text())
-    .then(body => {
-        var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }));
-        var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text;
-        station.url = rmfLink;
-        station.progress = 0;
-    });
-}
-
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
-    handle(handlerInput) {
-        const speakOutput = 'To listen to radio RMF FM simply say, open radio RMF FM';
+	handle(handlerInput) {
+		
+        const speakOutput = `To listen to radio ${STATION_NAME} simply say, open radio ${STATION_NAME}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -90,8 +78,8 @@ const ResumeIntentHandler = {
     },
     async handle(handlerInput) {
 
+		station = await radio.getLatestRadioLink(STATION_URL, station);
         console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
-        await getLatestRadioLink()
 
         return audio.playMusicWithMessage(station, RESUMING_MESSAGE)
     }
@@ -103,7 +91,8 @@ const CancelAndStopIntentHandler = {
             && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
-    handle(handlerInput) {
+	handle(handlerInput) {
+		
         console.log(`Cancel stop intent handler triggered: ${JSON.stringify(handlerInput)}`)
         return audio.stopPlayingWithMessage(STOP_MESSAGE);
     }
@@ -115,7 +104,8 @@ const PauseIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.PauseIntent');
     },
-    handle(handlerInput) {
+	handle(handlerInput) {
+		
         console.log(`Pause intent handler triggered: ${JSON.stringify(handlerInput)}`)
         return audio.stopPlayingWithMessage(STOP_MESSAGE)
     }
@@ -138,7 +128,8 @@ const UnsupportedIntentHandler = {
     handle(handlerInput) {
 
         const speakOutput = "Sorry, this is not supported for radio playback"
-        console.log(`Unsupported intent rejected: ${JSON.stringify(handlerInput)}`);
+		console.log(`Unsupported intent rejected: ${JSON.stringify(handlerInput)}`);
+		
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
@@ -175,7 +166,7 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
         console.log(`AudioPlayerPlaybackOrNearlyFinished called: ${JSON.stringify(handlerInput)}`);
         console.log(`Playback failed or nearly finished was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
 
-        await getLatestRadioLink()
+		station = await radio.getLatestRadioLink(STATION_URL, station);
 
         let response = audio.playMusicWithoutMessage(station)
         
@@ -195,7 +186,8 @@ const FallbackIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
     },
-    handle(handlerInput) {
+	handle(handlerInput) {
+		
         const speakOutput = 'Sorry, I don\'t know about that. Please try again.';
 
         return handlerInput.responseBuilder
