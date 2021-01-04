@@ -209,7 +209,7 @@ const SessionEndedRequestHandler = {
 	handle(handlerInput) {
 		console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`)
 		// Any cleanup logic goes here.
-		return audio.stopPlayingWithoutMessage() // notice we send an empty response
+		return audio.stopPlayingWithoutMessage()
 	}
 }
 
