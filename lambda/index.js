@@ -25,6 +25,7 @@ let station = {
 
 const NEW_STREAM_MESSAGE = `${HERE_IS} - ${station.name}, from ${station.channel}.`
 const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
+const STOP_MESSAGE = `Stopping!`
 
 
 const LaunchRequestHandler = {
@@ -36,7 +37,7 @@ const LaunchRequestHandler = {
         await getLatestRmfFmLink();
         console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        return audio.playMusic(station, NEW_STREAM_MESSAGE)
+        return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
     }
 };
 
@@ -50,7 +51,7 @@ const PlayRadioIntentHandler = {
         await getLatestRmfFmLink();
         console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-        return playMusic(NEW_STREAM_MESSAGE)
+        return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
 
     }
 };
@@ -64,30 +65,6 @@ async function getLatestRmfFmLink() {
         station.url = rmfLink;
         station.progress = 0;
     });
-}
-
-function stopMusic() {
-    const speakOutput = 'Stopping!';
-
-    let response = audio
-        .speak(speakOutput)
-        .stop()
-    
-    return response;
-}
-
-function playMusic(message) {
-    let response = null;
-    if (message != "") {
-        response = audio
-            .speak(message)
-            .play(station)
-    } else {
-        response = audio
-            .play(station)
-    }
-
-    return response;
 }
 
 const HelpIntentHandler = {
@@ -115,7 +92,7 @@ const ResumeIntentHandler = {
         console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
         await getLatestRmfFmLink()
 
-        return playMusic(RESUMING_MESSAGE)
+        return audio.playMusicWithMessage(station, RESUMING_MESSAGE)
     }
 };
 
@@ -127,7 +104,7 @@ const CancelAndStopIntentHandler = {
     },
     handle(handlerInput) {
         console.log(`Cancel stop intent handler triggered: ${JSON.stringify(handlerInput)}`)
-        return stopMusic();
+        return audio.stopPlayingWithMessage(STOP_MESSAGE);
     }
 };
 
@@ -139,7 +116,7 @@ const PauseIntentHandler = {
     },
     handle(handlerInput) {
         console.log(`Pause intent handler triggered: ${JSON.stringify(handlerInput)}`)
-        return stopMusic()
+        return audio.stopPlayingWithMessage(STOP_MESSAGE)
     }
 };
 
@@ -199,7 +176,7 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 
         await getLatestRmfFmLink()
 
-        let response = playMusic("")
+        let response = audio.playMusicWithoutMessage(station)
         
         console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
         

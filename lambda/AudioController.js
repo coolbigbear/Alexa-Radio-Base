@@ -69,8 +69,16 @@ class AlexaResponses {
         return this;
     }
 
-    playMusic(station, message) {
+    playMusicWithMessage(station, message) {
         return this.speak(message).play(station)
+    }
+
+    playMusicWithoutMessage(station) {
+        return this.play(station)
+    }
+
+    stopPlayingWithMessage(message) {
+        return this.speak(message).stop()
     }
 
 }
