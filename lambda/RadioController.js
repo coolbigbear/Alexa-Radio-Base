@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 var xmlToJson = require('xml-js');
 
 async function getLatestRadioLink(station_url, station) {
+    console.log(station_url)
     await fetch(station_url)
         .then(res => res.text())
         .then(body => {
