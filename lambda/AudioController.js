@@ -4,13 +4,10 @@ class AlexaResponses {
 	}
 
 	speak(speech) {
-		if (speech !== "") {
-			this.outputSpeech = {
-				type: "SSML",
-				ssml: `<speak>${speech}</speak>`,
-			}
+		this.outputSpeech = {
+			type: "SSML",
+			ssml: `<speak>${speech}</speak>`,
 		}
-
 		return this
 	}
 
@@ -82,7 +79,9 @@ class AlexaResponses {
 	}
 
 	stopPlayingWithoutMessage() {
-		return this.speak("").stop()
+		let response = this.stop()
+		delete response["outputSpeech"]
+		return response
 	}
 }
 module.exports = new AlexaResponses()
