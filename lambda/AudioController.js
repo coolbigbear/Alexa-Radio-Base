@@ -71,7 +71,9 @@ class AlexaResponses {
 	}
 
 	playMusicWithoutMessage(station) {
-		return this.speak("").play(station)
+		let response = this.play(station)
+		delete response["outputSpeech"]
+		return response
 	}
 
 	stopPlayingWithMessage(message) {
