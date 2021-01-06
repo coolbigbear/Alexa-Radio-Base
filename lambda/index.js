@@ -170,7 +170,7 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 
 		let response = audio.playMusicWithoutMessage(station)
         
-		console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
+		console.log(`BETA Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
         
 		return response
 	}
