@@ -33,7 +33,7 @@ const LaunchRequestHandler = {
         console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
         let response = audio
-            .speak(`${HERE_IS} - ${station.name}, from ${station.channel}.`)
+            .speak(`${HERE_IS} - ${station.name}`)
             .play(station)
 
         return response;
