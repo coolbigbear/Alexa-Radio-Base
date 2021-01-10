@@ -19,7 +19,9 @@ async function getPlayingSong(song_url) {
 	await fetch(song_url)
 		.then(res => res.text())
 		.then(body => {
+			console.log(`Body is: ${body}`)
 			var listOfSongsOnRadio = JSON.parse(body)
+			console.log(`List of songs on radio after parse is: ${listOfSongsOnRadio}`)
 			currentSong = listOfSongsOnRadio.radio05
 			console.log(`1 Current song is: ${currentSong}`)
 		})
