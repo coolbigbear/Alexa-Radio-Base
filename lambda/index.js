@@ -9,6 +9,7 @@ const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
 
+const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
 const STATION_NAME = "RMF FM"
 const STATION_CHANNEL = "Poland"
@@ -51,6 +52,25 @@ const PlayRadioIntentHandler = {
 		console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
+
+	}
+}
+
+const GetSongIntentHandler = {
+	canHandle(handlerInput) {
+		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === "GetSongIntent"
+	},
+	async handle(handlerInput) {
+
+		var song = await radio.getPlayingSong(SONG_URL)
+		console.log(`GetSong intent handler triggered: ${JSON.stringify(handlerInput)}`)
+		console.log(`Song is: ${song}`)
+
+		// return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
+		return handlerInput.responseBuilder
+			.speak("Now I'd say the song name")
+			.getResponse()
 
 	}
 }
@@ -265,6 +285,7 @@ exports.handler = Alexa.SkillBuilders.custom()
 	.addRequestHandlers(
 		LaunchRequestHandler,
 		PlayRadioIntentHandler,
+		GetSongIntentHandler,
 		AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent,
 		AudioPlayerIntent,
 		HelpIntentHandler,
