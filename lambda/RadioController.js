@@ -15,7 +15,7 @@ async function getLatestRadioLink(station_url, station) {
 }
 
 async function getPlayingSong(song_url) {
-	var currentSong = null;
+	var currentSong = null
 	await fetch(song_url)
 		.then(res => res.text())
 		.then(body => {
@@ -27,18 +27,18 @@ async function getPlayingSong(song_url) {
 	return currentSong
 }
 
-"radio5": {
-	"name": "Enej",
-		"utwor": "Grozi nam cud",
-			"id_autor": "6483",
-				"id_utwor": "71511",
-					"id_plyta": "44089",
-						"plyta": "Grozi nam cud",
-							"rok": "2020",
-								"cover": "https://i.static.rmf.pl/97/100_100_enej-ok-adka-grozi-nam-cud.jpg",
-									"coverBigUrl": "https://i.static.rmf.pl/97/512_512_enej-ok-adka-grozi-nam-cud.jpg",
-										"artist": "https://i.static.rmf.pl/97/293_220_enej.jpg",
-											"next": []
-},
+// "radio5": {
+// 	"name": "Enej",
+// 		"utwor": "Grozi nam cud",
+// 			"id_autor": "6483",
+// 				"id_utwor": "71511",
+// 					"id_plyta": "44089",
+// 						"plyta": "Grozi nam cud",
+// 							"rok": "2020",
+// 								"cover": "https://i.static.rmf.pl/97/100_100_enej-ok-adka-grozi-nam-cud.jpg",
+// 									"coverBigUrl": "https://i.static.rmf.pl/97/512_512_enej-ok-adka-grozi-nam-cud.jpg",
+// 										"artist": "https://i.static.rmf.pl/97/293_220_enej.jpg",
+// 											"next": []
+// },
 
 module.exports = { getLatestRadioLink, getPlayingSong }
