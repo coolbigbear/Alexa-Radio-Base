@@ -22,6 +22,7 @@ async function getPlayingSong(song_url) {
 			console.log(`Body is: ${body}`)
 			var listOfSongsOnRadio = JSON.parse(body)
 			console.log(`List of songs on radio after parse is: ${listOfSongsOnRadio}`)
+			console.log(listOfSongsOnRadio)
 			currentSong = listOfSongsOnRadio.radio05
 			console.log(`1 Current song is: ${currentSong}`)
 		})
