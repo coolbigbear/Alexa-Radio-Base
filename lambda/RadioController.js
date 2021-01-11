@@ -14,28 +14,20 @@ async function getLatestRadioLink(station_url, station) {
 	return station
 }
 
-async function getPlayingSong(song_url) {
-	var currentSong = null
+async function getPlayingSong(song_url, song) {
 	await fetch(song_url)
 		.then(res => res.text())
 		.then(body => {
-			console.log(`Body is: ${body}`)
-			console.log(body)
-			console.log(body.generate)
-			console.log(body["generate"])
 			var listOfSongsOnRadio = JSON.parse(body)
-			console.log(`List of songs on radio after parse is: ${listOfSongsOnRadio}`)
-			console.log(listOfSongsOnRadio)
-			console.log(listOfSongsOnRadio.generate)
-			console.log(listOfSongsOnRadio["generate"])
-			console.log(listOfSongsOnRadio.radio5)
-			console.log(listOfSongsOnRadio["radio5"])
-			currentSong = listOfSongsOnRadio.radio05
-			console.log(currentSong)
+			let currentSong = listOfSongsOnRadio.radio5
+			song.artist = currentSong.name
+			song.name = currentSong.utwor
+			song.disc = currentSong.plyta
+			song.year = currentSong.rok
 			console.log(`1 Current song is: ${currentSong}`)
+			console.log(currentSong)
 		})
-	console.log(`2 Current song is: ${currentSong}`)
-	return currentSong
+	return song
 }
 
 // "radio5": {

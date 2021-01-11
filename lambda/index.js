@@ -15,7 +15,7 @@ const STATION_NAME = "RMF FM"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is"
 
-let station = {
+let STATION = {
 	name: STATION_NAME,
 	channel: STATION_CHANNEL,
 	url: "",
@@ -23,7 +23,14 @@ let station = {
 	token: `${STATION_NAME}:${STATION_CHANNEL}`
 }
 
-const NEW_STREAM_MESSAGE = `${HERE_IS} - ${station.name}, from ${station.channel}.`
+let SONG = {
+	artist: "",
+	name: "",
+	disc: "",
+	year: ""
+}
+
+const NEW_STREAM_MESSAGE = `${HERE_IS} - ${STATION.name}, from ${STATION.channel}.`
 const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
 const STOP_MESSAGE = "Stopping!"
 
@@ -34,10 +41,10 @@ const LaunchRequestHandler = {
 	},
 	async handle(handlerInput) {
 
-		station = await radio.getLatestRadioLink(STATION_URL, station)
+		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
 		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-		return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
+		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
 	}
 }
 
@@ -48,10 +55,10 @@ const PlayRadioIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		station = await radio.getLatestRadioLink(STATION_URL, station)
+		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
 		console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-		return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
+		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
 
 	}
 }
@@ -63,14 +70,31 @@ const GetSongIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		var song = await radio.getPlayingSong(SONG_URL)
+		SONG = await radio.getPlayingSong(SONG_URL, SONG)
 		console.log(`GetSong intent handler triggered: ${JSON.stringify(handlerInput)}`)
-		console.log(`Song is: ${song}`)
+		console.log(`Song is: ${SONG}`)
 
-		// return audio.playMusicWithMessage(station, NEW_STREAM_MESSAGE)
-		return handlerInput.responseBuilder
-			.speak("Now I'd say the song name")
-			.getResponse()
+		let response = handlerInput.responseBuilder
+
+		// Nothing playing
+		if (SONG.name === "" || SONG.artist === "") {
+			response
+				.speak("There's nothing playing right now, try again in a bit")
+				.getResponse()
+		} else {
+			
+			if (SONG.disc === "") {
+				response
+					.speak(`This is, ${SONG.name}, by ${SONG.artist}`)
+					.getResponse()
+			} else {
+				response
+					.speak(`This is, ${SONG.name}, by ${SONG.artist} from album ${SONG.disc}`)
+					.getResponse()
+			}
+		}
+
+		return response
 
 	}
 }
@@ -98,10 +122,10 @@ const ResumeIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		station = await radio.getLatestRadioLink(STATION_URL, station)
+		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
 		console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-		return audio.playMusicWithMessage(station, RESUMING_MESSAGE)
+		return audio.playMusicWithMessage(STATION, RESUMING_MESSAGE)
 	}
 }
 
@@ -186,9 +210,9 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 		console.log(`AudioPlayerPlaybackOrNearlyFinished called: ${JSON.stringify(handlerInput)}`)
 		console.log(`Playback failed or nearly finished was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
 
-		station = await radio.getLatestRadioLink(STATION_URL, station)
+		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
 
-		let response = audio.playMusicWithoutMessage(station)
+		let response = audio.playMusicWithoutMessage(STATION)
         
 		console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
         
