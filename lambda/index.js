@@ -93,13 +93,16 @@ const GetSongIntentHandler = {
 				} else {
 					let array = []
 					for (let i = 0; i < split.length; i++) {
+						
 						array.push(split[i])
+						if (i == split.length - 1) {
+							continue
+						}
+
 						if (i == split.length - 2) {
 							array.push(", and ")
 						} else {
-							if (i != split.length) {
-								array.push(", ")
-							}
+							array.push(", ")
 						}
 					}
 					SONG.artist = array.join("")
