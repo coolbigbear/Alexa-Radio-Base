@@ -28,6 +28,8 @@ async function getPlayingSong(song_url) {
 			console.log(listOfSongsOnRadio)
 			console.log(listOfSongsOnRadio.generate)
 			console.log(listOfSongsOnRadio["generate"])
+			console.log(listOfSongsOnRadio.radio5)
+			console.log(listOfSongsOnRadio["radio5"])
 			currentSong = listOfSongsOnRadio.radio05
 			console.log(currentSong)
 			console.log(`1 Current song is: ${currentSong}`)
