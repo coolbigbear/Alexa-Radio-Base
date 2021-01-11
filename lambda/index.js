@@ -80,21 +80,18 @@ const GetSongIntentHandler = {
 		if (SONG.name === "" || SONG.artist === "") {
 			response
 				.speak("There's nothing playing right now, try again in a bit")
-				.getResponse()
 		} else {
 			
 			if (SONG.disc === "") {
 				response
 					.speak(`This is, ${SONG.name}, by ${SONG.artist}`)
-					.getResponse()
 			} else {
 				response
 					.speak(`This is, ${SONG.name}, by ${SONG.artist} from album ${SONG.disc}`)
-					.getResponse()
 			}
 		}
 
-		return response
+		return response.getResponse()
 
 	}
 }
