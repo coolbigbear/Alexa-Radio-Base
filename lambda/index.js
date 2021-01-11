@@ -76,7 +76,7 @@ const GetSongIntentHandler = {
 
 		let response = handlerInput.responseBuilder
 
-		SONG.artist = "24KGOLDN / Iann Dior"
+		SONG.artist = "24KGOLDN / Iann Dior / Matt Cool"
 
 		// Nothing playing
 		if (SONG.name === "" || SONG.artist === "") {
