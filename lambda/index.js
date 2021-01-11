@@ -76,24 +76,40 @@ const GetSongIntentHandler = {
 
 		let response = handlerInput.responseBuilder
 
+		SONG.artist = "24KGOLDN / Iann Dior"
+
 		// Nothing playing
 		if (SONG.name === "" || SONG.artist === "") {
 			response
-				.speak("There's nothing playing right now, try again in a bit")
+				.speak("There's no song playing, try again in a bit")
 		} else {
-			
-			if (SONG.disc === "") {
-				response
-					.speak(`This is, ${SONG.name}, by ${SONG.artist}`)
-			} else {
-				response
-					.speak(`This is, ${SONG.name}, by ${SONG.artist} from album ${SONG.disc}`)
+
+			if (SONG.artist.includes(" / ")) {
+				let split = SONG.artist.split(" / ")
+
+				// Only 2 artists, replace / with and
+				if (split.length == 2) {
+					SONG.artist = SONG.artist.replace(" / ", " and ")
+				} else {
+					split = split.join(", ")
+					let indexOfLastComma = split.lastIndexOf(", ")
+					split = replaceAt(split, indexOfLastComma, " and")
+					SONG.artist = split
+				}
 			}
+			
+			response
+				.speak(`This is, ${SONG.name} by ${SONG.artist}`)
+
 		}
 
 		return response.getResponse()
 
 	}
+}
+
+function replaceAt(string, index, replacement) {
+	return string.substr(0, index) + replacement + string.substr(index + replacement.length)
 }
 
 const HelpIntentHandler = {
