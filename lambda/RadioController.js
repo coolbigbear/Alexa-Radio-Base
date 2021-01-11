@@ -30,18 +30,39 @@ async function getPlayingSong(song_url, song) {
 	return song
 }
 
-// "radio5": {
-// 	"name": "Enej",
-// 		"utwor": "Grozi nam cud",
-// 			"id_autor": "6483",
-// 				"id_utwor": "71511",
-// 					"id_plyta": "44089",
-// 						"plyta": "Grozi nam cud",
-// 							"rok": "2020",
-// 								"cover": "https://i.static.rmf.pl/97/100_100_enej-ok-adka-grozi-nam-cud.jpg",
-// 									"coverBigUrl": "https://i.static.rmf.pl/97/512_512_enej-ok-adka-grozi-nam-cud.jpg",
-// 										"artist": "https://i.static.rmf.pl/97/293_220_enej.jpg",
-// 											"next": []
-// },
+function constructCurrentSongResponse(SONG) {
+	if (SONG.name === "" || SONG.artist === "") {
+		return "There's no song playing, try again in a bit"
+	} else {
 
-module.exports = { getLatestRadioLink, getPlayingSong }
+		if (SONG.artist.includes(" / ")) {
+			let split = SONG.artist.split(" / ")
+
+			// Only 2 artists, replace / with and
+			if (split.length == 2) {
+				SONG.artist = SONG.artist.replace(" / ", " , and ")
+			} else {
+				let array = []
+				for (let i = 0; i < split.length; i++) {
+
+					array.push(split[i])
+					if (i == split.length - 1) {
+						continue
+					}
+
+					if (i == split.length - 2) {
+						array.push(", and ")
+					} else {
+						array.push(", ")
+					}
+				}
+				SONG.artist = array.join("")
+			}
+		}
+
+		return `This is, ${SONG.name}, by ${SONG.artist}`
+
+	}
+}
+
+module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse }

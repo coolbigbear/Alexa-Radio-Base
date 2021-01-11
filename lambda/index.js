@@ -72,53 +72,12 @@ const GetSongIntentHandler = {
 
 		SONG = await radio.getPlayingSong(SONG_URL, SONG)
 		console.log(`GetSong intent handler triggered: ${JSON.stringify(handlerInput)}`)
-		console.log(`Song is: ${SONG}`)
 
-		let response = handlerInput.responseBuilder
-
-		// Nothing playing
-		if (SONG.name === "" || SONG.artist === "") {
-			response
-				.speak("There's no song playing, try again in a bit")
-		} else {
-
-			if (SONG.artist.includes(" / ")) {
-				let split = SONG.artist.split(" / ")
-
-				// Only 2 artists, replace / with and
-				if (split.length == 2) {
-					SONG.artist = SONG.artist.replace(" / ", " , and ")
-				} else {
-					let array = []
-					for (let i = 0; i < split.length; i++) {
-
-						array.push(split[i])
-						if (i == split.length - 1) {
-							continue
-						}
-
-						if (i == split.length - 2) {
-							array.push(", and ")
-						} else {
-							array.push(", ")
-						}
-					}
-					SONG.artist = array.join("")
-				}
-			}
-			
-			response
-				.speak(`This is, ${SONG.name}, by ${SONG.artist}`)
-
-		}
-
-		return response.getResponse()
+		return handlerInput.responseBuilder
+			.speak(radio.constructCurrentSongResponse(SONG))
+			.getResponse()
 
 	}
-}
-
-function replaceAt(string, index, replacement) {
-	return string.substr(0, index) + replacement + string.substr(index + replacement.length)
 }
 
 const HelpIntentHandler = {
@@ -206,9 +165,7 @@ const AudioPlayerIntent = {
 	canHandle(handlerInput) {
 		return (handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStarted" ||
             handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFinished" ||
-            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStopped" ||
-            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished" ||
-            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFailed"
+            handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStopped"
 		)
 	},
 	handle(handlerInput) {
@@ -229,15 +186,16 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 	},
 	async handle(handlerInput) {
 
-		console.log(`AudioPlayerPlaybackOrNearlyFinished called: ${JSON.stringify(handlerInput)}`)
-		console.log(`Playback failed or nearly finished was: ${JSON.stringify(handlerInput.requestEnvelope.request.type)}`)
+		if (handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished") {
+			console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
+		} else {
+			console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)}`)
+		}
 
 		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
 
 		let response = audio.playMusicWithoutMessage(STATION)
-        
-		console.log(`Response for playbackfailed or playbackNearlyFinished is: ${JSON.stringify(response)}`)
-        
+                
 		return response
 	}
 }
