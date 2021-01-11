@@ -92,7 +92,7 @@ const GetSongIntentHandler = {
 					SONG.artist = SONG.artist.replace(" / ", " , and ")
 				} else {
 					let array = []
-					for (let i = 0; i < split.length; i++) {
+					for (let i = 0; i < split.length - 1; i++) {
 						array.push(split[i])
 						if (i == split.length - 2) {
 							array.push(", and ")
