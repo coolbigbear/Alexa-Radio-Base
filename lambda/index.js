@@ -89,12 +89,18 @@ const GetSongIntentHandler = {
 
 				// Only 2 artists, replace / with and
 				if (split.length == 2) {
-					SONG.artist = SONG.artist.replace(" / ", " and ")
+					SONG.artist = SONG.artist.replace(" / ", " , and ")
 				} else {
-					split = split.join(", ")
-					let indexOfLastComma = split.lastIndexOf(", ")
-					split = replaceAt(split, indexOfLastComma, " and")
-					SONG.artist = split
+					let array = []
+					for (let i = 0; i < split.length; i++) {
+						array.push(split[i])
+						if (i == split.length - 1) {
+							array.push(", and ")
+						} else {
+							array.push(", ")
+						}
+					}
+					SONG.artist = array.join("")
 				}
 			}
 			
