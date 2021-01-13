@@ -24,8 +24,6 @@ async function getPlayingSong(song_url, song) {
 			song.name = currentSong.utwor
 			song.disc = currentSong.plyta
 			song.year = currentSong.rok
-			console.log(`1 Current song is: ${currentSong}`)
-			console.log(currentSong)
 		})
 	return song
 }

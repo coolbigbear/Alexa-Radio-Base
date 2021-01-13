@@ -88,6 +88,7 @@ const HelpIntentHandler = {
 	handle(handlerInput) {
 		
 		const speakOutput = `To listen to, radio ${STATION_NAME} simply say, open radio ${STATION_NAME}`
+		console.log(`Help intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return handlerInput.responseBuilder
 			.speak(speakOutput)
@@ -213,6 +214,7 @@ const FallbackIntentHandler = {
 	handle(handlerInput) {
 		
 		const speakOutput = "Sorry, I don't know about that. Please try again."
+		console.log(`Fallback intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return handlerInput.responseBuilder
 			.speak(speakOutput)
