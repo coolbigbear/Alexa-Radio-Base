@@ -333,7 +333,6 @@ exports.handler = Alexa.SkillBuilders.custom()
 	.addRequestHandlers(
 		LaunchRequestHandler,
 		PlayRadioIntentHandler,
-		GetSongIntentHandler,
 		PlaybackControllerHandler,
 		AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent,
 		AudioPlayerIntent,
