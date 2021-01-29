@@ -99,11 +99,9 @@ const HelpIntentHandler = {
 const ResumeIntentHandler = {
 
 	canHandle(handlerInput) {
-		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
-			&& (
-				Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.ResumeIntent" ||
-				handlerInput.requestEnvelope.request.type === "PlaybackController.PlayCommandIssued"
-			)
+		return handlerInput.requestEnvelope.request.type === "PlaybackController.PlayCommandIssued" ||
+			Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+			Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.ResumeIntent"
 	},
 	async handle(handlerInput) {
 
@@ -135,11 +133,9 @@ const CancelAndStopIntentHandler = {
 
 const PauseIntentHandler = {
 	canHandle(handlerInput) {
-		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
-			&& (
-				Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.PauseIntent" ||
-				handlerInput.requestEnvelope.request.type === "PlaybackController.PauseCommandIssued"
-			)
+		return handlerInput.requestEnvelope.request.type === "PlaybackController.PauseCommandIssued" ||
+			Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+			Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.PauseIntent"
 	},
 	handle(handlerInput) {
 
