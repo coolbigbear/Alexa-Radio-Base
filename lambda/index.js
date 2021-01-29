@@ -201,7 +201,6 @@ const AudioPlayerIntent = {
 	canHandle(handlerInput) {
 		return (
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStarted" ||
-			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFinished" ||
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStopped"
 		)
 	},
@@ -218,6 +217,7 @@ const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
 	canHandle(handlerInput) {
 		return (
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFailed" ||
+			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFinished" ||
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished"
 		)
 	},
