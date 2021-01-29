@@ -11,7 +11,7 @@ const Alexa = require("ask-sdk-core")
 
 const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
-const STATION_NAME = "R. M. F. F. M."
+const STATION_NAME = "RMF FM"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
 
