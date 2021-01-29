@@ -93,8 +93,11 @@ const PlayAnthemIntentHandler = {
 
 		station_copy.url = audioUrl
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
-
-		return audio.playMusicWithMessage(station_copy, "Playing")
+		
+		let response = audio.playMusicWithMessage(station_copy, "Playing")
+		console.log(`Anthem: ${JSON.stringify(response)}`)
+		
+		return response
 
 	}
 }
