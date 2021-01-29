@@ -89,8 +89,7 @@ const PlayAnthemIntentHandler = {
 	async handle(handlerInput) {
 
 		let station_copy = STATION
-		const audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3").replace(/&/g, "&amp;")
-
+		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
 		station_copy.url = audioUrl
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
 		
