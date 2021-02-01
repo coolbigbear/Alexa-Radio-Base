@@ -54,7 +54,7 @@ class AlexaResponses {
 		return this
 	}
 
-	enqueue() {
+	enqueue(station) {
 		this.directives = [
 			{
 				type: "AudioPlayer.Play",
