@@ -8,7 +8,6 @@
 const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
-const Util = require("util.js")
 
 const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
@@ -201,6 +200,7 @@ const AudioPlayerIntent = {
 	canHandle(handlerInput) {
 		return (
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStarted" ||
+			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFinished" ||
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackStopped"
 		)
 	},
@@ -213,25 +213,37 @@ const AudioPlayerIntent = {
 	}
 }
 
-const AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent = {
+const AudioPlayerPlaybackFailedIntent = {
 	canHandle(handlerInput) {
 		return (
-			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFailed" ||
-			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFinished" ||
+			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackFailed"
+		)
+	},
+	async handle(handlerInput) {
+
+		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)}`)
+
+		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+
+		let response = audio.playMusicWithoutMessage(STATION)
+
+		return response
+	}
+}
+
+const AudioPlayerPlaybackNearlyFinishedIntent = {
+	canHandle(handlerInput) {
+		return (
 			handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished"
 		)
 	},
 	async handle(handlerInput) {
 
-		if (handlerInput.requestEnvelope.request.type === "AudioPlayer.PlaybackNearlyFinished") {
-			console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
-		} else {
-			console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)}`)
-		}
+		console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
 
 		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
 
-		let response = audio.playMusicWithoutMessage(STATION)
+		let response = audio.enqueueNextStreamWithoutMessage(STATION)
 
 		return response
 	}
@@ -332,7 +344,7 @@ const ErrorHandler = {
 		const speakOutput = "Sorry, I had trouble doing what you asked. Please try again."
 		console.log(`~~~~ Error handled: ${error}`)
 		console.log(`~~~~ Error handled JSON: ${JSON.stringify(error)}`)
-		console.log(`~~~~ Handler Input: ${JSON.stringify(handlerInput)}`)
+		console.log(`~~~~ Error Handler Input: ${JSON.stringify(handlerInput)}`)
 
 		return handlerInput.responseBuilder
 			.speak(speakOutput)
@@ -352,7 +364,8 @@ exports.handler = Alexa.SkillBuilders.custom()
 		PlayRadioIntentHandler,
 		PlayAnthemIntentHandler,
 		PlaybackControllerHandler,
-		AudioPlayerPlaybackFailedPlaybackNearlyFinishedIntent,
+		AudioPlayerPlaybackNearlyFinishedIntent,
+		AudioPlayerPlaybackFailedIntent,
 		AudioPlayerIntent,
 		HelpIntentHandler,
 		ResumeIntentHandler,

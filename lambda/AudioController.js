@@ -54,6 +54,25 @@ class AlexaResponses {
 		return this
 	}
 
+	enqueue() {
+		this.directives = [
+			{
+				type: "AudioPlayer.Play",
+				playBehavior: "ENQUEUE",
+				audioItem: {
+					stream: {
+						url: `${station.url}`,
+						token: `${station.token}`,
+						offsetInMilliseconds: `${station.progress}`,
+						expectedPreviousToken: `${station.token}`,
+					},
+				},
+			},
+		]
+
+		return this
+	}
+
 	stop() {
 		this.directives = [
 			{
@@ -68,6 +87,12 @@ class AlexaResponses {
 
 	playMusicWithMessage(station, message) {
 		return this.speak(message).play(station)
+	}
+
+	enqueueNextStreamWithoutMessage(station) {
+		let response = this.enqueue(station)
+		delete response["outputSpeech"]
+		return response
 	}
 
 	playMusicWithoutMessage(station) {
