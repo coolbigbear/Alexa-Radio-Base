@@ -8,6 +8,8 @@
 const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
+const Escape = require("lodash/escape")
+const Util = require("util.js")
 
 const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
@@ -88,8 +90,10 @@ const PlayAnthemIntentHandler = {
 	async handle(handlerInput) {
 
 		let station_copy = STATION
-		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
-		station_copy.url = audioUrl
+		// const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
+		const audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
+		station_copy.url = Escape(audioUrl)
+		
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
 		
 		let response = audio.playMusicWithMessage(station_copy, "Playing")
