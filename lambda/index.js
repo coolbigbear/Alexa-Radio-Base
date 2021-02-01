@@ -90,11 +90,11 @@ const PlayAnthemIntentHandler = {
 	async handle(handlerInput) {
 
 		let station_copy = STATION
-		// const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
-		let audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
-		console.log(`Non escaped ${audioUrl}`)
-		audioUrl = Escape(audioUrl)
-		console.log(`Escaped ${audioUrl}`)
+		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
+		// let audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
+		// console.log(`Non escaped ${audioUrl}`)
+		// audioUrl = Escape(audioUrl)
+		// console.log(`Escaped ${audioUrl}`)
 		station_copy.url = audioUrl
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
 		
