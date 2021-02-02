@@ -19,9 +19,9 @@
           "name": "PlayRadioIntent",
           "slots": [],
           "samples": [
-            "play rmf fm",
-            "play radio rmf fm",
-            "play radio"
+            "play",
+            "play r. m. f. f. m.",
+            "play radio r. m. f. f. m. "
           ]
         },
         {
@@ -35,10 +35,19 @@
         {
           "name": "AMAZON.ResumeIntent",
           "samples": []
+        },
+        {
+          "name": "PlayAnthemIntent",
+          "slots": [],
+          "samples": [
+            "polish anthem",
+            "anthem",
+            "play anthem"
+          ]
         }
       ],
       "types": []
     }
   },
-  "version": "6"
+  "version": "1"
 }
