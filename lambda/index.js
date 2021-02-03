@@ -89,7 +89,7 @@ const PlayAnthemIntentHandler = {
 	async handle(handlerInput) {
 
 		let station_copy = STATION
-		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
+		const audioUrl = "https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1"
 		// let audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
 		// console.log(`Non escaped ${audioUrl}`)
 		// audioUrl = Escape(audioUrl)
