@@ -11,7 +11,7 @@ const Alexa = require("ask-sdk-core")
 const Escape = require("lodash/escape")
 const Util = require("util.js")
 
-const STATION_URL = "https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1"
+const STATION_URL = "https://streams.radiomast.io/4d0743b5-b63a-43f1-9f7f-e8a04abe9367"
 const STATION_NAME = "Radio Zet"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
@@ -89,7 +89,7 @@ const PlayAnthemIntentHandler = {
 	async handle(handlerInput) {
 
 		let station_copy = STATION
-		const audioUrl = "https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1"
+		const audioUrl = "https://streams.radiomast.io/4d0743b5-b63a-43f1-9f7f-e8a04abe9367"
 		// let audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
 		// console.log(`Non escaped ${audioUrl}`)
 		// audioUrl = Escape(audioUrl)
