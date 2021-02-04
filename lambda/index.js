@@ -11,7 +11,7 @@ const Alexa = require("ask-sdk-core")
 const Escape = require("lodash/escape")
 const Util = require("util.js")
 
-const STATION_URL = "https://zt03.cdn.eurozet.pl/zet-tun.mp3"
+const STATION_URL = "https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1"
 const STATION_NAME = "Radio Zet"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
