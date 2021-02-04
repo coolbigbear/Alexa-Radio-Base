@@ -4,12 +4,21 @@ var xmlToJson = require("xml-js")
 
 async function getLatestRadioLink(station_url, station) {
 	await fetch(station_url)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`Error network response was: ${response}`)
+			}
+			return response
+		})
 		.then(res => res.text())
 		.then(body => {
 			var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }))
 			var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text
 			station.url = rmfLink
 			station.progress = 0
+		})
+		.catch(error => {
+			console.error("Error with fetch", error)
 		})
 	return station
 }
