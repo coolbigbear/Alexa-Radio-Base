@@ -18,7 +18,7 @@ async function getLatestRadioLink(station_url, station) {
 			station.progress = 0
 		})
 		.catch(error => {
-			console.error("Error with fetch", error)
+			console.log("Error with fetch", error)
 		})
 	return station
 }
