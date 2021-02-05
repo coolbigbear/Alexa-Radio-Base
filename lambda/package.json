@@ -5,7 +5,7 @@
   "description": "Alexa skill which plays Polish Radio-Zet",
   "main": "index.js",
   "scripts": {
-    "prepare": "apt install git-all && git submodule init && git submodule update",
+    // "prepare": "apt install git-all && git submodule init && git submodule update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "https://github.com/coolbigbear",
@@ -17,7 +17,8 @@
     "xmlhttprequest": "^1.8.0",
     "node-fetch": "^2.6.0",
     "xml-js": "^1.6.11",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "Radio-Zet": "https://github.com/coolbigbear/Alexa-Radio-Zet-Config.git"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
