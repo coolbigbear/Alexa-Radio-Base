@@ -2,14 +2,22 @@
 const fetch = require("node-fetch")
 var xmlToJson = require("xml-js")
 
-const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
+// const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
 const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
 const STATION_NAME = "RMF FM"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
 
-async function getLatestRadioLink(station_url, station) {
-	await fetch(station_url)
+let STATION = {
+	name: STATION_NAME,
+	channel: STATION_CHANNEL,
+	url: "",
+	progress: 0,
+	token: `${STATION_NAME}:${STATION_CHANNEL}`
+}
+
+async function getLatestRadioLink() {
+	await fetch(STATION_URL)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`Error network response was: ${response}`)
@@ -20,13 +28,13 @@ async function getLatestRadioLink(station_url, station) {
 		.then(body => {
 			var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }))
 			var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text
-			station.url = rmfLink
-			station.progress = 0
+			STATION.url = rmfLink
+			STATION.progress = 0
 		})
 		.catch(error => {
 			console.log("Error with fetch", error)
 		})
-	return station
+	return STATION
 }
 
 async function getPlayingSong(song_url, song) {
@@ -78,4 +86,4 @@ function constructCurrentSongResponse(SONG) {
 	}
 }
 
-module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse, STATION_URL, SONG_URL, STATION_NAME, STATION_CHANNEL, HERE_IS }
+module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse, STATION_NAME, HERE_IS }
