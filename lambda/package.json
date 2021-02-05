@@ -5,7 +5,7 @@
   "description": "Alexa skill which plays Polish Radio-Zet",
   "main": "index.js",
   "scripts": {
-    "prepare": "uname -a && which yum",
+    "prepare": "uname -a && echo '$PATH'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "https://github.com/coolbigbear",
