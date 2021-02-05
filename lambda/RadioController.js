@@ -7,6 +7,8 @@ const STATION_NAME = "Zet"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
 
+// Cool comment
+
 let STATION = {
 	name: STATION_NAME,
 	channel: STATION_CHANNEL,
