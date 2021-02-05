@@ -14,7 +14,6 @@ const NEW_STREAM_MESSAGE = `${HERE_IS} radio ${STATION_NAME}`
 const RESUMING_MESSAGE = `Resuming radio ${STATION_NAME}`
 const STOP_MESSAGE = "Stopping!"
 
-//Comment
 
 // let SONG = {
 // 	artist: "",
@@ -207,9 +206,9 @@ const AudioPlayerPlaybackFailedIntent = {
 	},
 	async handle(handlerInput) {
 
-		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
-
 		let STATION = await radio.getLatestRadioLink()
+
+		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
 
 		let response = audio.playMusicWithoutMessage(STATION)
 
