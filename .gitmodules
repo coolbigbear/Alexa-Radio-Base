@@ -1,0 +1,3 @@
+[submodule "lambda/Alexa-Radio-Zet-Config"]
+	path = lambda/Alexa-Radio-Zet-Config
+	url = https://github.com/coolbigbear/Alexa-Radio-Zet-Config.git
