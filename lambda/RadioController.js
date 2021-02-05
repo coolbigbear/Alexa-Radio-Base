@@ -15,6 +15,7 @@ let STATION = {
 	progress: 0,
 	token: `${STATION_NAME}:${STATION_CHANNEL}`
 }
+let ERROR = ""
 
 async function getLatestRadioLink() {
 	await fetch(STATION_URL)
@@ -32,8 +33,12 @@ async function getLatestRadioLink() {
 			STATION.progress = 0
 		})
 		.catch(error => {
+			ERROR = error
 			console.log("Error with fetch", error)
 		})
+	if (ERROR.length > 0) {
+		console.log(ERROR)
+	}
 	return STATION
 }
 
