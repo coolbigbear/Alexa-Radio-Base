@@ -2,7 +2,7 @@
   "name": "radio-zet",
   "type": "module",
   "version": "1.2.0",
-  "description": "Alexa skill which plays Polish Radio RMF FM",
+  "description": "Alexa skill which plays Polish Radio-Zet",
   "main": "index.js",
   "scripts": {
     "prepare": "sudo apt install git-all && git submodule init && git submodule update",
