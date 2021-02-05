@@ -206,10 +206,10 @@ const AudioPlayerPlaybackFailedIntent = {
 	},
 	async handle(handlerInput) {
 
-		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
-
 		let STATION = await radio.getLatestRadioLink()
-
+		
+		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
+		
 		let response = audio.playMusicWithoutMessage(STATION)
 
 		return response
