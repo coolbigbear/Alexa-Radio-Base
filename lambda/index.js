@@ -249,11 +249,8 @@ const PlaybackControllerHandler = {
 			console.log(`PlaybackController.NextCommandIssued called: ${JSON.stringify(handlerInput)}`)
 		}
 
-		let STATION = await radio.getLatestRadioLink()
-
-		let response = audio.playMusicWithoutMessage(STATION)
-
-		return response
+		return handlerInput.responseBuilder
+			.getResponse()
 	}
 }
 
