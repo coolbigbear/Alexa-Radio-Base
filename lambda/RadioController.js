@@ -1,10 +1,23 @@
 
 const fetch = require("node-fetch")
-var xmlToJson = require("xml-js")
 
-async function getLatestRadioLink(station_url, station) {
-	station.url = station_url
-	return station
+const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
+const STATION_URL = "https://zt03.cdn.eurozet.pl/zet-tun.mp3"
+const STATION_NAME = "Zet"
+const STATION_CHANNEL = "Poland"
+const HERE_IS = "Here is,"
+
+let STATION = {
+	name: STATION_NAME,
+	channel: STATION_CHANNEL,
+	url: "",
+	progress: 0,
+	token: `${STATION_NAME}:${STATION_CHANNEL}`
+}
+
+async function getLatestRadioLink() {
+	STATION.url = STATION_URL;
+	return STATION
 }
 
 async function getPlayingSong(song_url, song) {
@@ -56,4 +69,4 @@ function constructCurrentSongResponse(SONG) {
 	}
 }
 
-module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse }
+module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse, STATION_NAME, HERE_IS }

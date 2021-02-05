@@ -4,37 +4,23 @@
  * session persistence, api calls, and more.
  * */
 
-//  This is an extra comment that will be soon removed
 const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
-const Escape = require("lodash/escape")
-const Util = require("util.js")
 
-const STATION_URL = "https://zt03.cdn.eurozet.pl/zet-tun.mp3"
-const STATION_NAME = "Radio Zet"
-const STATION_CHANNEL = "Poland"
-const HERE_IS = "Here is,"
-
-let STATION = {
-	name: STATION_NAME,
-	channel: STATION_CHANNEL,
-	url: "",
-	progress: 0,
-	token: `${STATION_NAME}:${STATION_CHANNEL}`
-}
-
-let SONG = {
-	artist: "",
-	name: "",
-	disc: "",
-	year: ""
-}
-
-const NEW_STREAM_MESSAGE = `${HERE_IS} ${STATION_NAME}`
-const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
+const STATION_NAME = radio.STATION_NAME
+const HERE_IS = radio.HERE_IS
+const NEW_STREAM_MESSAGE = `${HERE_IS} radio ${STATION_NAME}`
+const RESUMING_MESSAGE = `Resuming radio ${STATION_NAME}`
 const STOP_MESSAGE = "Stopping!"
 
+
+// let SONG = {
+// 	artist: "",
+// 	name: "",
+// 	disc: "",
+// 	year: ""
+// }
 
 const LaunchRequestHandler = {
 	canHandle(handlerInput) {
@@ -42,7 +28,7 @@ const LaunchRequestHandler = {
 	},
 	async handle(handlerInput) {
 
-		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+		let STATION = await radio.getLatestRadioLink()
 		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
@@ -56,7 +42,7 @@ const PlayRadioIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+		let STATION = await radio.getLatestRadioLink()
 		console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
@@ -64,22 +50,21 @@ const PlayRadioIntentHandler = {
 	}
 }
 
-const GetSongIntentHandler = {
-	canHandle(handlerInput) {
-		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
-			&& Alexa.getIntentName(handlerInput.requestEnvelope) === "GetSongIntent"
-	},
-	async handle(handlerInput) {
+// const GetSongIntentHandler = {
+// 	canHandle(handlerInput) {
+// 		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+// 			&& Alexa.getIntentName(handlerInput.requestEnvelope) === "GetSongIntent"
+// 	},
+// 	async handle(handlerInput) {
 
-		SONG = await radio.getPlayingSong(SONG_URL, SONG)
-		console.log(`GetSong intent handler triggered: ${JSON.stringify(handlerInput)}`)
+// 		SONG = await radio.getPlayingSong(SONG_URL, SONG)
+// 		console.log(`GetSong intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-		return handlerInput.responseBuilder
-			.speak(radio.constructCurrentSongResponse(SONG))
-			.getResponse()
-
-	}
-}
+// 		return handlerInput.responseBuilder
+// 			.speak(radio.constructCurrentSongResponse(SONG))
+// 			.getResponse()
+// 	}
+// }
 
 const PlayAnthemIntentHandler = {
 	canHandle(handlerInput) {
@@ -88,18 +73,13 @@ const PlayAnthemIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		let station_copy = STATION
+		let station_copy = await radio.getLatestRadioLink()
 		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
-		// let audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
-		// console.log(`Non escaped ${audioUrl}`)
-		// audioUrl = Escape(audioUrl)
-		// console.log(`Escaped ${audioUrl}`)
 		station_copy.url = audioUrl
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
-		
+
 		let response = audio.playMusicWithMessage(station_copy, "Playing")
-		console.log(`Anthem: ${JSON.stringify(response)}`)
-		
+
 		return response
 
 	}
@@ -112,7 +92,7 @@ const HelpIntentHandler = {
 	},
 	handle(handlerInput) {
 
-		const speakOutput = `To listen to, ${STATION_NAME}, simply say, open ${STATION_NAME}`
+		const speakOutput = `To listen to, radio ${STATION_NAME}, simply say, open radio ${STATION_NAME}`
 		console.log(`Help intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return handlerInput.responseBuilder
@@ -130,7 +110,7 @@ const ResumeIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+		let STATION = await radio.getLatestRadioLink()
 		console.log(`Resuming intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		if (handlerInput.requestEnvelope.request.type === "PlaybackController.PlayCommandIssued") {
@@ -138,7 +118,7 @@ const ResumeIntentHandler = {
 		} else {
 			return audio.playMusicWithMessage(STATION, RESUMING_MESSAGE)
 		}
-		
+
 	}
 }
 
@@ -226,9 +206,9 @@ const AudioPlayerPlaybackFailedIntent = {
 	},
 	async handle(handlerInput) {
 
-		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)}`)
+		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
 
-		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+		let STATION = await radio.getLatestRadioLink()
 
 		let response = audio.playMusicWithoutMessage(STATION)
 
@@ -246,7 +226,7 @@ const AudioPlayerPlaybackNearlyFinishedIntent = {
 
 		console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
 
-		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+		let STATION = await radio.getLatestRadioLink()
 
 		let response = audio.enqueueNextStreamWithoutMessage(STATION)
 
@@ -269,7 +249,7 @@ const PlaybackControllerHandler = {
 			console.log(`PlaybackController.NextCommandIssued called: ${JSON.stringify(handlerInput)}`)
 		}
 
-		STATION = await radio.getLatestRadioLink(STATION_URL, STATION)
+		let STATION = await radio.getLatestRadioLink()
 
 		let response = audio.playMusicWithoutMessage(STATION)
 
@@ -347,9 +327,7 @@ const ErrorHandler = {
 	},
 	handle(handlerInput, error) {
 		const speakOutput = "Sorry, I had trouble doing what you asked. Please try again."
-		console.log(`~~~~ Error handled: ${error}`)
-		console.log(`~~~~ Error handled JSON: ${JSON.stringify(error)}`)
-		console.log(`~~~~ Error Handler Input: ${JSON.stringify(handlerInput)}`)
+		console.log(`~~~~ Error handled: ${error} \nhandle JSON: ${JSON.stringify(error)} \nHandler Input: ${JSON.stringify(handlerInput)}`)
 
 		return handlerInput.responseBuilder
 			.speak(speakOutput)
