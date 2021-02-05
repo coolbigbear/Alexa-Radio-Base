@@ -1,10 +1,11 @@
 {
-  "name": "Radio-RMF-FM",
+  "name": "radio-zet",
   "type": "module",
   "version": "1.2.0",
   "description": "Alexa skill which plays Polish Radio RMF FM",
   "main": "index.js",
   "scripts": {
+    "prepare": "git submodule init && git submodule update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "https://github.com/coolbigbear",
