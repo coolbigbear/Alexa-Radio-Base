@@ -17,8 +17,7 @@
     "xmlhttprequest": "^1.8.0",
     "node-fetch": "^2.6.0",
     "xml-js": "^1.6.11",
-    "lodash": "^4.17.11",
-    "radio-zet-config": "coolbigbear/Alexa-Radio-Zet-Config#master"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
