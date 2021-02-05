@@ -2,6 +2,12 @@
 const fetch = require("node-fetch")
 var xmlToJson = require("xml-js")
 
+const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
+const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
+const STATION_NAME = "RMF FM"
+const STATION_CHANNEL = "Poland"
+const HERE_IS = "Here is,"
+
 async function getLatestRadioLink(station_url, station) {
 	await fetch(station_url)
 		.then(response => {
@@ -72,4 +78,4 @@ function constructCurrentSongResponse(SONG) {
 	}
 }
 
-module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse }
+module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse, STATION_URL, SONG_URL, STATION_NAME, STATION_CHANNEL, HERE_IS }

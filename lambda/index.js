@@ -4,18 +4,18 @@
  * session persistence, api calls, and more.
  * */
 
-//  This is an extra comment that will be soon removed
 const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
-const Escape = require("lodash/escape")
-const Util = require("util.js")
 
-const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
-const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
-const STATION_NAME = "RMF FM"
-const STATION_CHANNEL = "Poland"
-const HERE_IS = "Here is,"
+const SONG_URL = radio.SONG_URL
+const STATION_URL = radio.STATION_URL
+const STATION_NAME = radio.STATION_NAME
+const STATION_CHANNEL = radio.STATION_CHANNEL
+const HERE_IS = radio.HERE_IS
+const NEW_STREAM_MESSAGE = `${HERE_IS} radio ${STATION_NAME}`
+const RESUMING_MESSAGE = `Resuming radio ${STATION_NAME}`
+const STOP_MESSAGE = "Stopping!"
 
 let STATION = {
 	name: STATION_NAME,
@@ -31,11 +31,6 @@ let SONG = {
 	disc: "",
 	year: ""
 }
-
-const NEW_STREAM_MESSAGE = `${HERE_IS} ${STATION.name}`
-const RESUMING_MESSAGE = `Resuming ${STATION_NAME}`
-const STOP_MESSAGE = "Stopping!"
-
 
 const LaunchRequestHandler = {
 	canHandle(handlerInput) {
@@ -78,7 +73,6 @@ const GetSongIntentHandler = {
 		return handlerInput.responseBuilder
 			.speak(radio.constructCurrentSongResponse(SONG))
 			.getResponse()
-
 	}
 }
 
@@ -91,15 +85,10 @@ const PlayAnthemIntentHandler = {
 
 		let station_copy = STATION
 		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
-		// let audioUrl = Util.getS3PreSignedUrl("Media/anthem.mp3")
-		// console.log(`Non escaped ${audioUrl}`)
-		// audioUrl = Escape(audioUrl)
-		// console.log(`Escaped ${audioUrl}`)
 		station_copy.url = audioUrl
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
 		
 		let response = audio.playMusicWithMessage(station_copy, "Playing")
-		console.log(`Anthem: ${JSON.stringify(response)}`)
 		
 		return response
 
