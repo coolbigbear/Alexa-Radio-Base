@@ -3,8 +3,9 @@ const fetch = require("node-fetch")
 var xmlToJson = require("xml-js")
 
 // const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
-const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
-const STATION_NAME = "RMF FM"
+// const STATION_URL = "https://stream.rcs.revma.com/ye5kghkgcm0uv"
+const STATION_URL = "https://streams.radiomast.io/4d0743b5-b63a-43f1-9f7f-e8a04abe9367"
+const STATION_NAME = "357"
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
 
@@ -18,27 +19,7 @@ let STATION = {
 let ERROR = ""
 
 async function getLatestRadioLink() {
-	await fetch(STATION_URL)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`Error network response was: ${response}`)
-			}
-			return response
-		})
-		.then(res => res.text())
-		.then(body => {
-			var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }))
-			var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text
-			STATION.url = rmfLink
-			STATION.progress = 0
-		})
-		.catch(error => {
-			ERROR = error
-			console.log("Error with fetch", error)
-		})
-	if (ERROR.length > 0) {
-		console.log(ERROR)
-	}
+	STATION.url = STATION_URL
 	return STATION
 }
 
