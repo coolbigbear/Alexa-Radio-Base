@@ -1,0 +1,25 @@
+{
+  "name": "Radio-RMF-FM",
+  "type": "module",
+  "version": "1.2.0",
+  "description": "Alexa skill which plays Polish Radio RMF FM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "https://github.com/coolbigbear",
+  "license": "Apache License",
+  "dependencies": {
+    "ask-sdk-core": "^2.7.0",
+    "ask-sdk-model": "^1.19.0",
+    "aws-sdk": "^2.326.0",
+    "xmlhttprequest": "^1.8.0",
+    "node-fetch": "^2.6.0",
+    "xml-js": "^1.6.11",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
