@@ -29,7 +29,7 @@ const LaunchRequestHandler = {
 	async handle(handlerInput) {
 
 		let STATION = await radio.getLatestRadioLink()
-		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)} ${JSON.stringify(process)}`)
+		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)} ${JSON.stringify(process.env)}`)
 
 		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
 	}
