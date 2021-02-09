@@ -19,6 +19,9 @@ async function getLatestRadioLink(secondURL = false) {
 		token: `${STATION_INFO.radio_name}:${STATION_INFO.channel}`,
 	}
 
+	console.log(`DEV --- ${JSON.stringify(STATION_INFO)}`)
+	console.log(`DEV --- ${JSON.stringify(STATION)}`)
+
 	if (secondURL) {
 		STATION.url = STATION_INFO.URL2
 	} else {
