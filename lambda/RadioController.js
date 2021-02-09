@@ -4,8 +4,9 @@ const DB = require("DynamoDB")
 var xmlToJson = require("xml-js")
 
 // const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
-const STATION_URL = "http://rmfon.pl/stacje/flash_aac_5.xml.txt"
-const STATION_NAME = "RMF FM"
+const STATION_INFO = DB.getStationInfo()
+const STATION_URL = STATION_INFO.URL
+const STATION_NAME = STATION_INFO.RADIO_NAME
 const STATION_CHANNEL = "Poland"
 const HERE_IS = "Here is,"
 
@@ -16,12 +17,21 @@ let STATION = {
 	progress: 0,
 	token: `${STATION_NAME}:${STATION_CHANNEL}`
 }
+
 let ERROR = ""
 
 async function getLatestRadioLink() {
 	
-	const test = await DB.getStationInfo()
-	console.log(`DEV RADIO CONTROLLER--- ${JSON.stringify(test)}`)
+	if (STATION_INFO.parse) {
+		await parseRMFLink(STATION_URL)
+	} else {
+		STATION.url = STATION_URL
+	}
+
+	return STATION
+}
+
+async function parseRMFLink(STATION_URL) {
 	await fetch(STATION_URL)
 		.then(response => {
 			if (!response.ok) {
