@@ -49,28 +49,12 @@ async function getStationInfo() {
 		return data
 	}).promise()
 
-
-	// const dynamoDB = new AWS.DynamoDB({
-	// 	apiVersion: '2012-08-10',
-	// 	accessKeyId: credentials.Credentials.AccessKeyId,
-	// 	secretAccessKey: credentials.Credentials.SecretAccessKey,
-	// 	sessionToken: credentials.Credentials.SessionToken,
-	// 	region: `eu-north-1`
-	// });
-	// const tableData = await dynamoDB.scan({ TableName: 'alexa-radios' }, (err, data) => {
-	// 	if (err) {
-	// 		console.log('Scan FAILED', err);
-	// 		throw new Error('Error while scanning table');
-	// 	}
-	// 	return data;
-	// }).promise();
 	console.log(`DEV --- ${JSON.stringify(tableData)}`)
 	let unpacked = JSON.stringify(AWS.DynamoDB.Converter.unmarshall(tableData.Items[0]))
 	console.log(`DEV --- ${unpacked}`)
 
 	return unpacked
 
-	// ... Use table data as required ...
 }
 
 module.exports = { getStationInfo }

@@ -4,34 +4,38 @@ const DB = require("DynamoDB")
 var xmlToJson = require("xml-js")
 
 // const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
-const STATION_INFO = DB.getStationInfo()
-const STATION_URL = STATION_INFO.URL
-const STATION_NAME = STATION_INFO.RADIO_NAME
-const STATION_CHANNEL = "Poland"
-const HERE_IS = "Here is,"
 
-let STATION = {
-	name: STATION_NAME,
-	channel: STATION_CHANNEL,
-	url: "",
-	progress: 0,
-	token: `${STATION_NAME}:${STATION_CHANNEL}`
-}
+let STATION_INFO = {}
 
-let ERROR = ""
+async function getLatestRadioLink(secondURL = false) {
 
-async function getLatestRadioLink() {
+	STATION_INFO = await DB.getStationInfo()
 	
-	if (STATION_INFO.parse) {
-		await parseRMFLink(STATION_URL)
-	} else {
-		STATION.url = STATION_URL
+	let STATION = {
+		name: STATION_INFO.radio_name,
+		channel: STATION_INFO.channel,
+		url: null,
+		progress: 0,
+		token: `${STATION_INFO.radio_name}:${STATION_INFO.channel}`,
 	}
+
+	if (secondURL) {
+		STATION.url = STATION_INFO.URL2
+	} else {
+		if (STATION_INFO.parse) {
+			STATION = await parseRMFLink(STATION_INFO.URL, STATION)
+		} else {
+			STATION.url = STATION_INFO.URL
+		}
+	}
+
 	console.log(`DEV --- ${JSON.stringify(STATION)}`)
 	return STATION
 }
 
-async function parseRMFLink(STATION_URL) {
+async function parseRMFLink(STATION_URL, STATION) {
+	let ERROR = ""
+
 	await fetch(STATION_URL)
 		.then(response => {
 			if (!response.ok) {
@@ -105,4 +109,4 @@ function constructCurrentSongResponse(SONG) {
 	}
 }
 
-module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse, STATION_NAME, HERE_IS }
+module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse }
