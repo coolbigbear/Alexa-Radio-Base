@@ -66,9 +66,10 @@ async function getStationInfo() {
 	// }).promise();
 	console.log(`DEV --- ${JSON.stringify(tableData)}`)
 	let unpacked = AWS.DynamoDB.Converter.unmarshall(tableData)
-	console.log(`DEV --- ${JSON.stringify(unpacked)}`)
+	console.log(`DEV --- ${JSON.stringify(AWS.DynamoDB.Converter.unmarshall(tableData))}`)
 	console.log(`DEV --- ${unpacked}`)
-	console.log(unpacked)
+	console.log("Unpacked", unpacked)
+	console.log("Unpacked %s", unpacked)
 	console.log(JSON.stringify(unpacked))
 	console.log(console.dir(unpacked, { depth: null }))
 	const util = require('util')
