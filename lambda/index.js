@@ -8,6 +8,7 @@ const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
 
+// Should show on two skills
 // let SONG = {
 // 	artist: "",
 // 	name: "",
