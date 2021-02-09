@@ -1,2 +1,3 @@
-# AlexaSkill-Radio-Zet
-Alexa skill for playing Radio Zet
+# Alexa-Radio-Base-Code
+
+Base code for all radio skills
