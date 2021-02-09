@@ -27,7 +27,7 @@ async function getLatestRadioLink() {
 	} else {
 		STATION.url = STATION_URL
 	}
-
+	console.log(`DEV --- ${JSON.stringify(STATION)}`)
 	return STATION
 }
 
