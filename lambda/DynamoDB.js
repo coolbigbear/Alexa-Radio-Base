@@ -29,8 +29,6 @@ async function getStationInfo() {
 		region: `eu-north-1`
 	})
 
-	console.log(`DEV --- ${SKILL_ID}`)
-
 	const params = {
 		TableName: "alexa-radios",
 		KeyConditionExpression: "radioID = :radioID",
@@ -51,7 +49,6 @@ async function getStationInfo() {
 
 	// console.log(`DEV --- ${JSON.stringify(tableData)}`)
 	let unpacked = AWS.DynamoDB.Converter.unmarshall(tableData.Items[0])
-	console.log(`DEV --- ${unpacked}`)
 
 	return unpacked
 

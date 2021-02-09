@@ -34,7 +34,7 @@ const LaunchRequestHandler = {
 	async handle(handlerInput) {
 
 		let STATION = await radio.getLatestRadioLink()
-		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)} ${JSON.stringify(process.env)}`)
+		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return audio.playMusicWithMessage(STATION, constructNewStreamMessage(STATION))
 	}
@@ -213,7 +213,7 @@ const AudioPlayerPlaybackFailedIntent = {
 
 		let STATION = await radio.getLatestRadioLink()
 
-		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
+		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation JSON: ${JSON.stringify(STATION)}`)
 		
 		let response = audio.playMusicWithoutMessage(STATION)
 
@@ -229,9 +229,9 @@ const AudioPlayerPlaybackNearlyFinishedIntent = {
 	},
 	async handle(handlerInput) {
 
-		console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
-
 		let STATION = await radio.getLatestRadioLink()
+		
+		console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
 
 		let response = audio.enqueueNextStreamWithoutMessage(STATION)
 
