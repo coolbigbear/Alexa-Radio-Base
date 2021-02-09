@@ -8,19 +8,24 @@ const audio = require("AudioController.js")
 const radio = require("RadioController.js")
 const Alexa = require("ask-sdk-core")
 
-const STATION_NAME = radio.STATION_NAME
-const HERE_IS = radio.HERE_IS
-const NEW_STREAM_MESSAGE = `${HERE_IS} radio ${STATION_NAME}`
-const RESUMING_MESSAGE = `Resuming radio ${STATION_NAME}`
-const STOP_MESSAGE = "Stopping!"
-
-
 // let SONG = {
 // 	artist: "",
 // 	name: "",
 // 	disc: "",
 // 	year: ""
 // }
+
+function constructNewStreamMessage(STATION) {
+	return `Here is, radio ${STATION.name}`
+}
+
+function constructResumingMessage(STATION) {
+	return `Resuming radio ${STATION.name}`
+}
+
+function constructStopMessage() {
+	return `Stopping!`
+}
 
 const LaunchRequestHandler = {
 	canHandle(handlerInput) {
@@ -31,7 +36,7 @@ const LaunchRequestHandler = {
 		let STATION = await radio.getLatestRadioLink()
 		console.log(`Launch intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
+		return audio.playMusicWithMessage(STATION, constructNewStreamMessage(STATION))
 	}
 }
 
@@ -45,7 +50,7 @@ const PlayRadioIntentHandler = {
 		let STATION = await radio.getLatestRadioLink()
 		console.log(`PlayRadio intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
-		return audio.playMusicWithMessage(STATION, NEW_STREAM_MESSAGE)
+		return audio.playMusicWithMessage(STATION, constructNewStreamMessage(STATION))
 
 	}
 }
@@ -73,13 +78,11 @@ const PlayAnthemIntentHandler = {
 	},
 	async handle(handlerInput) {
 
-		let station_copy = await radio.getLatestRadioLink()
-		const audioUrl = "https://rmffm-alexa-media.s3.eu-north-1.amazonaws.com/anthem.mp3"
-		station_copy.url = audioUrl
+		let STATION = await radio.getLatestRadioLink(true)
 		console.log(`Anthem intent handler triggered: ${JSON.stringify(handlerInput)}`)
-
-		let response = audio.playMusicWithMessage(station_copy, "Playing")
-
+		
+		let response = audio.playMusicWithMessage(STATION, "Playing")
+		
 		return response
 
 	}
@@ -90,9 +93,11 @@ const HelpIntentHandler = {
 		return Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
 			&& Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.HelpIntent"
 	},
-	handle(handlerInput) {
+	async handle(handlerInput) {
 
-		const speakOutput = `To listen to, radio ${STATION_NAME}, simply say, open radio ${STATION_NAME}`
+		let STATION = await radio.getLatestRadioLink()
+
+		const speakOutput = `To listen to, radio ${STATION.name}, simply say, open radio ${STATION.name}`
 		console.log(`Help intent handler triggered: ${JSON.stringify(handlerInput)}`)
 
 		return handlerInput.responseBuilder
@@ -116,9 +121,9 @@ const ResumeIntentHandler = {
 		if (handlerInput.requestEnvelope.request.type === "PlaybackController.PlayCommandIssued") {
 			return audio.playMusicWithoutMessage(STATION)
 		} else {
-			return audio.playMusicWithMessage(STATION, RESUMING_MESSAGE)
+			return audio.playMusicWithMessage(STATION, constructResumingMessage(STATION))
 		}
-
+		
 	}
 }
 
@@ -131,7 +136,7 @@ const CancelAndStopIntentHandler = {
 	handle(handlerInput) {
 
 		console.log(`Cancel stop intent handler triggered: ${JSON.stringify(handlerInput)}`)
-		return audio.stopPlayingWithMessage(STOP_MESSAGE)
+		return audio.stopPlayingWithMessage(constructStopMessage())
 	}
 }
 
@@ -149,7 +154,7 @@ const PauseIntentHandler = {
 		if (handlerInput.requestEnvelope.request.type === "PlaybackController.PauseCommandIssued") {
 			return audio.stopPlayingWithoutMessage()
 		} else {
-			return audio.stopPlayingWithMessage(STOP_MESSAGE)
+			return audio.stopPlayingWithMessage(constructStopMessage())
 		}
 
 	}
@@ -208,8 +213,8 @@ const AudioPlayerPlaybackFailedIntent = {
 
 		let STATION = await radio.getLatestRadioLink()
 
-		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation: ${STATION} \nStation JSON: ${JSON.stringify(STATION)}`)
-
+		console.log(`AudioPlayer.PlaybackFailed called: ${JSON.stringify(handlerInput)} \nStation JSON: ${JSON.stringify(STATION)}`)
+		
 		let response = audio.playMusicWithoutMessage(STATION)
 
 		return response
@@ -224,9 +229,9 @@ const AudioPlayerPlaybackNearlyFinishedIntent = {
 	},
 	async handle(handlerInput) {
 
-		console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
-
 		let STATION = await radio.getLatestRadioLink()
+		
+		console.log(`AudioPlayer.PlaybackNearlyFinished called: ${JSON.stringify(handlerInput)}`)
 
 		let response = audio.enqueueNextStreamWithoutMessage(STATION)
 

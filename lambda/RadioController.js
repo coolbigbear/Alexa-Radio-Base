@@ -1,22 +1,61 @@
 
 const fetch = require("node-fetch")
+const DB = require("DynamoDB")
+var xmlToJson = require("xml-js")
 
-const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
-const STATION_URL = "https://zt03.cdn.eurozet.pl/zet-tun.mp3"
-const STATION_NAME = "Zet"
-const STATION_CHANNEL = "Poland"
-const HERE_IS = "Here is,"
+// const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
 
-let STATION = {
-	name: STATION_NAME,
-	channel: STATION_CHANNEL,
-	url: "",
-	progress: 0,
-	token: `${STATION_NAME}:${STATION_CHANNEL}`
+let STATION_INFO = {}
+
+async function getLatestRadioLink(secondURL = false) {
+
+	STATION_INFO = await DB.getStationInfo()
+	
+	let STATION = {
+		name: STATION_INFO.radio_name,
+		channel: STATION_INFO.channel,
+		url: null,
+		progress: 0,
+		token: `${STATION_INFO.radio_name}:${STATION_INFO.channel}`,
+	}
+
+	if (secondURL) {
+		STATION.url = STATION_INFO.URL2
+	} else {
+		if (STATION_INFO.parse) {
+			STATION = await parseRMFLink(STATION_INFO.URL, STATION)
+		} else {
+			STATION.url = STATION_INFO.URL
+		}
+	}
+
+	return STATION
 }
 
-async function getLatestRadioLink() {
-	STATION.url = STATION_URL;
+async function parseRMFLink(STATION_URL, STATION) {
+	let ERROR = ""
+
+	await fetch(STATION_URL)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`Error network response was: ${response}`)
+			}
+			return response
+		})
+		.then(res => res.text())
+		.then(body => {
+			var listOfRmfFmLinks = JSON.parse(xmlToJson.xml2json(body, { compact: true, spaces: 4 }))
+			var rmfLink = listOfRmfFmLinks.xml.playlistMp3.item_mp3[0]._text
+			STATION.url = rmfLink
+			STATION.progress = 0
+		})
+		.catch(error => {
+			ERROR = error
+			console.log("Error with fetch", error)
+		})
+	if (ERROR.length > 0) {
+		console.log(ERROR)
+	}
 	return STATION
 }
 
@@ -69,4 +108,4 @@ function constructCurrentSongResponse(SONG) {
 	}
 }
 
-module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse, STATION_NAME, HERE_IS }
+module.exports = { getLatestRadioLink, getPlayingSong, constructCurrentSongResponse }
