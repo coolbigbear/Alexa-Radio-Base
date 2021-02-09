@@ -21,7 +21,7 @@ let ERROR = ""
 async function getLatestRadioLink() {
 	
 	const test = await DB.getStationInfo()
-	console.log(`DEV --- ${JSON.stringify(test)}`)
+	console.log(`DEV RADIO CONTROLLER--- ${JSON.stringify(test)}`)
 	await fetch(STATION_URL)
 		.then(response => {
 			if (!response.ok) {
