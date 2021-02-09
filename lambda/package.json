@@ -1,8 +1,8 @@
 {
-  "name": "radio-357",
+  "name": "radio-skill",
   "type": "module",
   "version": "1.2.0",
-  "description": "Alexa skill which plays Polish Radio 357",
+  "description": "Alexa skill which plays radio",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
