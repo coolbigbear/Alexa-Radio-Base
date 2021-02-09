@@ -27,7 +27,7 @@ async function getStationInfo() {
 		secretAccessKey: credentials.Credentials.SecretAccessKey,
 		sessionToken: credentials.Credentials.SessionToken,
 	})
-
+	console.log(`DEV --- ${SKILL_ID}`)
 	const params = {
 		TableName: "alexa-radios",
 		KeyConditionExpression: "radioID = :radioID",
