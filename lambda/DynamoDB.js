@@ -21,46 +21,49 @@ async function getStationInfo() {
 
 	// 2. Make a new DynamoDB instance with the assumed role credentials
 	//    and scan the DynamoDB table
-	// const dynamoDB = new AWS.DynamoDB({
-	// 	apiVersion: "2012-08-10",
-	// 	accessKeyId: credentials.Credentials.AccessKeyId,
-	// 	secretAccessKey: credentials.Credentials.SecretAccessKey,
-	// 	sessionToken: credentials.Credentials.SessionToken,
-	// })
-	// console.log(`DEV --- ${SKILL_ID}`)
-	// const params = {
-	// 	TableName: "alexa-radios",
-	// 	KeyConditionExpression: "radioID = :radioID",
-	// 	ExpressionAttributeValues: {
-	// 		":radioID": { "S": "3554b814-5902-4abe-96f2-9fa5b457aec7"}
-	// 	}
-	// }
-
-	// const tableData = await dynamoDB.query(params, (err, data) => {
-	// 	console.log(`DEV --- ${JSON.stringify(params)}`)
-	// 	if (err) {
-	// 		console.log("Query FAILED", err);
-	// 		throw new Error("Error while querying table")
-	// 	}
-
-	// 	return data
-	// }).promise()
-
-
 	const dynamoDB = new AWS.DynamoDB({
-		apiVersion: '2012-08-10',
+		apiVersion: "2012-08-10",
 		accessKeyId: credentials.Credentials.AccessKeyId,
 		secretAccessKey: credentials.Credentials.SecretAccessKey,
 		sessionToken: credentials.Credentials.SessionToken,
 		region: `eu-north-1`
-	});
-	const tableData = await dynamoDB.scan({ TableName: 'alexa-radios' }, (err, data) => {
-		if (err) {
-			console.log('Scan FAILED', err);
-			throw new Error('Error while scanning table');
+	})
+
+	console.log(`DEV --- ${SKILL_ID}`)
+	
+	const params = {
+		TableName: "alexa-radios",
+		KeyConditionExpression: "radioID = :radioID",
+		ExpressionAttributeValues: {
+			":radioID": { "S": SKILL_ID}
 		}
-		return data;
-	}).promise();
+	}
+
+	const tableData = await dynamoDB.query(params, (err, data) => {
+		console.log(`DEV --- ${JSON.stringify(params)}`)
+		if (err) {
+			console.log("Query FAILED", err);
+			throw new Error("Error while querying table")
+		}
+
+		return data
+	}).promise()
+
+
+	// const dynamoDB = new AWS.DynamoDB({
+	// 	apiVersion: '2012-08-10',
+	// 	accessKeyId: credentials.Credentials.AccessKeyId,
+	// 	secretAccessKey: credentials.Credentials.SecretAccessKey,
+	// 	sessionToken: credentials.Credentials.SessionToken,
+	// 	region: `eu-north-1`
+	// });
+	// const tableData = await dynamoDB.scan({ TableName: 'alexa-radios' }, (err, data) => {
+	// 	if (err) {
+	// 		console.log('Scan FAILED', err);
+	// 		throw new Error('Error while scanning table');
+	// 	}
+	// 	return data;
+	// }).promise();
 	console.log(`DEV --- ${JSON.stringify(tableData)}`)
 	return tableData
 
