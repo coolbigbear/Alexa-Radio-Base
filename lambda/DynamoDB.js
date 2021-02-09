@@ -71,6 +71,9 @@ async function getStationInfo() {
 	console.log(unpacked)
 	console.log(JSON.stringify(unpacked))
 	console.log(console.dir(unpacked, { depth: null }))
+	const util = require('util')
+
+	console.log(util.inspect(unpacked, { showHidden: false, depth: null }))
 
 	return tableData
 
