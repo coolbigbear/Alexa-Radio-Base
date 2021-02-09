@@ -70,7 +70,7 @@ async function getStationInfo() {
 	console.log(`DEV --- ${unpacked}`)
 	console.log(unpacked)
 	console.log(JSON.stringify(unpacked))
-	console.dir(unpacked, { depth: null })
+	console.log(console.dir(unpacked, { depth: null }))
 
 	return tableData
 
