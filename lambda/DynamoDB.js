@@ -65,9 +65,10 @@ async function getStationInfo() {
 	// 	return data;
 	// }).promise();
 	console.log(`DEV --- ${JSON.stringify(tableData)}`)
-	let unpacked = dynamoDB.Converter.unmarshall(tableData)
+	let unpacked = AWS.DynamoDB.Converter.unmarshall(tableData)
 	console.log(`DEV --- ${JSON.stringify(unpacked)}`)
 	console.log(`DEV --- ${unpacked}`)
+
 	return tableData
 
 	// ... Use table data as required ...
