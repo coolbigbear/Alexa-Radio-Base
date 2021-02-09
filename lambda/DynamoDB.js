@@ -40,7 +40,7 @@ async function getStationInfo() {
 	}
 
 	const tableData = await dynamoDB.query(params, (err, data) => {
-		console.log(`DEV --- ${JSON.stringify(params)}`)
+		// console.log(`DEV --- ${JSON.stringify(params)}`)
 		if (err) {
 			console.log("Query FAILED", err);
 			throw new Error("Error while querying table")
@@ -49,7 +49,7 @@ async function getStationInfo() {
 		return data
 	}).promise()
 
-	console.log(`DEV --- ${JSON.stringify(tableData)}`)
+	// console.log(`DEV --- ${JSON.stringify(tableData)}`)
 	let unpacked = JSON.stringify(AWS.DynamoDB.Converter.unmarshall(tableData.Items[0]))
 	console.log(`DEV --- ${unpacked}`)
 
