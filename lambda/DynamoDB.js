@@ -51,7 +51,8 @@ async function getStationInfo() {
 		apiVersion: '2012-08-10',
 		accessKeyId: credentials.Credentials.AccessKeyId,
 		secretAccessKey: credentials.Credentials.SecretAccessKey,
-		sessionToken: credentials.Credentials.SessionToken
+		sessionToken: credentials.Credentials.SessionToken,
+		region: `eu-north-1`
 	});
 	const tableData = await dynamoDB.scan({ TableName: 'alexa-radios' }, (err, data) => {
 		if (err) {
