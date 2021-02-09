@@ -30,9 +30,9 @@ async function getStationInfo() {
 
 	const params = {
 		TableName: "alexa-radios",
-		KeyConditionExpression: "#radioID = :lambda-function-name",
+		KeyConditionExpression: "#radioID = :radioID",
 		ExpressionAttributeValues: {
-			":lambda-function-name": SKILL_ID
+			":radioID": SKILL_ID
 		}
 	}
 
