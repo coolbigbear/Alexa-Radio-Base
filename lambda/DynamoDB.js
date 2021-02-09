@@ -32,11 +32,12 @@ async function getStationInfo() {
 		TableName: "alexa-radios",
 		KeyConditionExpression: "radioID = :radioID",
 		ExpressionAttributeValues: {
-			":radioID": { "S": SKILL_ID}
+			":radioID": { "S": "3554b814-5902-4abe-96f2-9fa5b457aec7"}
 		}
 	}
 
 	const tableData = await dynamoDB.query(params, (err, data) => {
+		console.log(`DEV --- ${JSON.stringify(params)}`)
 		if (err) {
 			console.log("Query FAILED", err);
 			throw new Error("Error while querying table")
