@@ -1,5 +1,6 @@
 
 const fetch = require("node-fetch")
+const DB = require("DynamoDB")
 var xmlToJson = require("xml-js")
 
 // const SONG_URL = "https://www.rmfon.pl/stacje/ajax_playing_main.txt"
@@ -18,6 +19,9 @@ let STATION = {
 let ERROR = ""
 
 async function getLatestRadioLink() {
+	
+	const test = await DB.getStationInfo()
+	console.log(`DEV --- ${JSON.stringify(test)}`)
 	await fetch(STATION_URL)
 		.then(response => {
 			if (!response.ok) {
