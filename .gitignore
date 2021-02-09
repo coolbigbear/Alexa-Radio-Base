@@ -3,7 +3,5 @@ ask-resources.json
 .vscode
 icons
 lambda/node_modules
-lambda/package.json
-lambda/package-lock.json
 skill-package
 *.code-workspace
